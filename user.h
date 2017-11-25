@@ -29,9 +29,20 @@ public:
     void setPassword();
     void setName();
     void setSurname();
+    void setLogin(string newValue);
+    void setPassword(string newValue);
+    void setName(string newValue);
+    void setSurname(string newValue);
 
     //string convertToFileFormat();
 };
+
+// konwersja tekstu
+int convertStrToInt (string str);
+string convertIntToStr(int i);
+string changeToLowerCase(string word);
+string fromCapitalLetter(string word);
+
 
 int addNewUser(vector <User> &users, int numberOfUsers);
 int readUsersFromFile(vector <User> &users);

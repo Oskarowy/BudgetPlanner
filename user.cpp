@@ -9,6 +9,30 @@
 
 using namespace std;
 
+int convertStrToInt (string str) {
+    int i;
+    istringstream iss(str);
+    iss >> i;
+    return i;
+}
+
+string convertIntToStr(int i) {
+    ostringstream ss;
+    ss << i;
+    string str = ss.str();
+    return str;
+}
+
+string changeToLowerCase(string word) {
+    transform(word.begin(), word.end(), word.begin(),::tolower);
+    return word;
+}
+
+string fromCapitalLetter(string word) {
+    transform(word.begin(), word.begin()+1, word.begin(),::toupper);
+    return word;
+}
+
 int User::getID() {
     return id;
 }
@@ -71,6 +95,19 @@ void User::setSurname() {
     surname = newSurname;
 }
 
+void User::setLogin(string newValue) {
+    login = newValue;
+}
+void User::setPassword(string newValue) {
+    password = newValue;
+}
+void User::setName(string newValue) {
+    name = newValue;
+}
+void User::setSurname(string newValue) {
+    surname = newValue;
+}
+
 /*string User::convertToFileFormat() {
     return (convertIntToStr(id) + '|' + login + '|' + password + '|' + "\n");
 }
@@ -116,8 +153,8 @@ int addNewUser(vector <User> &users, int numberOfUsers) {
     User singleUserData;
 
     singleUserData.setID(numberOfUsers+1);
-    singleUserData.setNewLogin();
-    singleUserData.setNewPassword();
+    singleUserData.setLogin();
+    singleUserData.setPassword();
 
     if(singleUserData.getPassword() != "brak") {
 
@@ -200,7 +237,7 @@ void saveInFile(vector <User> &users) {
         file << itr->convertToFileFormat();
     file.close();
 }
-
+*/
 bool isAnyUserRegistered(int numberOfUsers) {
     if(numberOfUsers == 0) {
         cout << "Brak zarejestrowanych Uzytkownikow..." << endl;
@@ -209,4 +246,18 @@ bool isAnyUserRegistered(int numberOfUsers) {
     }
     return true;
 }
-*/
+
+void confirmationOfChange() {
+    cout << endl << "Zmiany zapisano pomyslnie!" << endl;
+    Sleep(1000);
+}
+
+void choosenOptionIsNotCorrect() {
+    cout << endl << "Wybierz poprawna opcje z menu" << endl;
+    Sleep(500);
+}
+
+bool choosenMenu (bool firstMenu) {
+    if(firstMenu == true)return true;
+    else return false;
+}

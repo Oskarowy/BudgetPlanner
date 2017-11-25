@@ -7,25 +7,30 @@ class User {
 
 private:
     int id;
-    string login, password;
+    string login, password, name, surname;
+
 public:
-    User(int dID = 0, string dLogin = "brak", string dPassword = "brak") {
+    User( int dID = 0, string dLogin = "login", string dPassword = "haslo", string dName = "imie", string dSurname = "nazwisko" ) {
         id = dID;
         this->login = dLogin;
         this->password = dPassword;
+        this->name = dName;
+        this->surname = dSurname;
     }
-
-    void setID(int newID);
-    void setLogin(string newLogin);
-    void setPassword(string newPassword);
-    void setNewLogin();
-    void setNewPassword();
 
     int getID();
     string getLogin();
     string getPassword();
+    string getName();
+    string getSurname();
 
-    string convertToFileFormat();
+    void setID(int newID);
+    void setLogin();
+    void setPassword();
+    void setName();
+    void setSurname();
+
+    //string convertToFileFormat();
 };
 
 int addNewUser(vector <User> &users, int numberOfUsers);

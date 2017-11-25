@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1511608580 source:d:\programowanie\projekty\budgetplanner\main.cpp
+	<iostream>
+	"user.h"
+
+1511608641 d:\programowanie\projekty\budgetplanner\user.h
+	<iostream>
+	<vector>
+

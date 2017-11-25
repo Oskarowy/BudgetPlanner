@@ -1,5 +1,4 @@
 #include "user.h"
-#include "person.h"
 #include <iostream>
 #include <sstream>
 #include <vector>
@@ -9,40 +8,6 @@
 #include <windows.h>
 
 using namespace std;
-
-void User::setID(int newID) {
-    id = newID;
-}
-
-void User::setLogin(string newLogin) {
-    login = newLogin;
-}
-
-void User::setPassword(string newPassword) {
-    password = newPassword;
-}
-
-void User::setNewLogin() {
-    string newLogin;
-    cout << "Podaj login: ";
-    cin.sync();
-    getline(cin,newLogin);
-    setLogin(newLogin);
-}
-
-void User::setNewPassword() {
-    string newPassword;
-    string newPasswordConfirmation;
-    cout << "Podaj haslo: ";
-    cin.sync();
-    getline(cin,newPassword);
-    cout << "Podaj ponownie haslo: ";
-    cin.sync();
-    getline(cin,newPasswordConfirmation);
-
-    if(newPassword == newPasswordConfirmation) setPassword(newPassword);
-    else cout << endl << "Wprowadzone hasla nie sa takie same!" << endl;
-}
 
 int User::getID() {
     return id;
@@ -56,7 +21,57 @@ string User::getPassword() {
     return password;
 }
 
-string User::convertToFileFormat() {
+string User::getName() {
+    return name;
+}
+
+string User::getSurname() {
+    return surname;
+}
+
+void User::setID(int newID) {
+    id = newID;
+}
+
+void User::setLogin() {
+    string newLogin;
+    cout << "Podaj login: ";
+    cin.sync();
+    getline(cin,newLogin);
+    login = newLogin;
+}
+
+void User::setPassword() {
+    string newPassword;
+    string newPasswordConfirmation;
+    cout << "Podaj haslo: ";
+    cin.sync();
+    getline(cin,newPassword);
+    cout << "Podaj ponownie haslo: ";
+    cin.sync();
+    getline(cin,newPasswordConfirmation);
+
+    if(newPassword == newPasswordConfirmation) password = newPassword;
+    else cout << endl << "Wprowadzone hasla nie sa takie same!" << endl;
+}
+
+void User::setName() {
+    string newName;
+    cout << "Podaj imie: ";
+    cin.sync();
+    getline(cin,newName);
+    name = newName;
+}
+
+void User::setSurname() {
+    string newSurname;
+    cout << "Podaj nazwisko: ";
+    cin.sync();
+    getline(cin,newSurname);
+    surname = newSurname;
+}
+
+/*string User::convertToFileFormat() {
     return (convertIntToStr(id) + '|' + login + '|' + password + '|' + "\n");
 }
 
@@ -194,4 +209,4 @@ bool isAnyUserRegistered(int numberOfUsers) {
     }
     return true;
 }
-
+*/

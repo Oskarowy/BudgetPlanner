@@ -14,10 +14,8 @@ int main() {
     vector <User> users;
     int numberOfUsers = 0;
     int loggedUserID = 0;
-    string loggedUserLogin = "";
-
-    //vector <Person> people;
-    //int numberOfPeopleInTelebook = 0;
+    string loggedUserName = "";
+    string loggedUserSurname = "";
 
     numberOfUsers = readUsersFromFile(users);
 
@@ -44,8 +42,11 @@ int main() {
             case '2':
                 loggedUserID = login(getLoggedUserID(users, numberOfUsers));
                 if(loggedUserID != 0) {
-                    loggedUserLogin = users[loggedUserID-1].getLogin();
-                    //numberOfPeopleInTelebook = readFromFile(people,loggedUserID);
+                    loggedUserName = users[loggedUserID-1].getName();
+                    loggedUserSurname = users[loggedUserID-1].getSurname();
+                    /////////////////////////////////////////////////////////////////
+                    //////wczytaj wydatki i przychody zalogowanego uzytkownika///////
+                    /////////////////////////////////////////////////////////////////
                     firstMenu = false;
                 }
                 break;
@@ -60,17 +61,16 @@ int main() {
             system("cls");
             cout << "--------------------------------------------------------" << endl;
             cout << "------------- Dane zalogowanego Uzytkownika ------------" << endl << endl;
-            cout << "                   Login: " << loggedUserLogin << endl;
-            cout << "                   Numer ID: " << loggedUserID << endl << endl;
+            cout << "              Imie: " << loggedUserName << endl;
+            cout << "              Nazwisko: " << loggedUserSurname << endl << endl;
             cout << "--------------------------------------------------------" << endl<< endl;
-            cout << "1. Dodaj nowa osobe do Ksiazki" << endl;
-            cout << "2. Wyszukiwanie po imieniu" << endl;
-            cout << "3. Wyszukiwanie po nazwisku" << endl;
-            cout << "4. Wyswietl wszystkie osoby z Ksiazki" << endl;
-            cout << "5. Usun osobe z Ksiazki" << endl;
-            cout << "6. Edytuj dane osoby" << endl;
-            cout << "7. Zmien haslo" << endl;
-            cout << "8. Wyloguj sie" << endl;
+            cout << "1. Dodaj przychod" << endl;
+            cout << "2. Dodaj wydatek" << endl;
+            cout << "3. Bilans z biezacego miesiaca" << endl;
+            cout << "4. Bilans z poprzedniego miesiaca" << endl;
+            cout << "5. Bilans z wybranego okresu" << endl;
+            cout << "6. Zmien haslo" << endl;
+            cout << "7. Wyloguj sie" << endl;
 
             cin >> choosenMenuOption;
 
@@ -85,7 +85,7 @@ int main() {
                 //searchBySurname(people);
                 break;
            /* case '4':
-                /*if(isTelebookEmpty(numberOfPeopleInTelebook) == false) {
+                if(isTelebookEmpty(numberOfPeopleInTelebook) == false) {
                     if(people.empty() == false) showAllPeopleData(people);
                     else {
                         cout << endl << "Ten Uzytkownik nie ma zapisanych zadnych osob w Ksiazce!" << endl;
@@ -129,16 +129,19 @@ int main() {
                         numberOfPeopleInTelebook = updateNumberOfPeopleInTelebook(people,numberOfPeopleInTelebook, loggedUserID);
                     }
                 }
-                break;
-            case '7':
-                users[loggedUserID-1].setNewPassword();
+                break;*/
+            case '6':
+                users[loggedUserID-1].setPassword();
                 saveInFile(users);
                 confirmationOfChange();
                 break;
-           */ case '8':
+            case '7':
                 loggedUserID = 0;
-                loggedUserLogin = "";
-                //people.clear();
+                loggedUserName = "";
+                loggedUserSurname = "";
+                /////////////////////////////////////////////////////////////////
+                //////wyczysc wydatki i przychody zalogowanego uzytkownika///////
+                /////////////////////////////////////////////////////////////////
                 firstMenu = true;
                 break;
             default:

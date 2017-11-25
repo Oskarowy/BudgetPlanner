@@ -16,23 +16,6 @@ int convertStrToInt (string str) {
     return i;
 }
 
-string convertIntToStr(int i) {
-    ostringstream ss;
-    ss << i;
-    string str = ss.str();
-    return str;
-}
-
-string changeToLowerCase(string word) {
-    transform(word.begin(), word.end(), word.begin(),::tolower);
-    return word;
-}
-
-string fromCapitalLetter(string word) {
-    transform(word.begin(), word.begin()+1, word.begin(),::toupper);
-    return word;
-}
-
 int User::getID() {
     return id;
 }
@@ -116,20 +99,20 @@ int readUsersFromFile(vector <User> &users) {
     CMarkup xmlFile;
     xmlFile.Load("users.xml");
 
-    while(xmlFile.FindElem( "USER" )){
+    while(xmlFile.FindElem("USER")){
         xmlFile.IntoElem();
-            xmlFile.FindElem( "ID" );
-            singleUserData.setID( convertStrToInt(xmlFile.GetData()) );
-            xmlFile.FindElem( "LOGIN" );
-            singleUserData.setLogin( xmlFile.GetData() );
-            xmlFile.FindElem( "PASSWORD" );
-            singleUserData.setPassword( xmlFile.GetData() );
-            xmlFile.FindElem( "NAME" );
-            singleUserData.setName( xmlFile.GetData() );
-            xmlFile.FindElem( "SURNAME" );
-            singleUserData.setSurname( xmlFile.GetData() );
+            xmlFile.FindElem("ID");
+            singleUserData.setID(convertStrToInt(xmlFile.GetData()));
+            xmlFile.FindElem("LOGIN");
+            singleUserData.setLogin( xmlFile.GetData());
+            xmlFile.FindElem("PASSWORD");
+            singleUserData.setPassword(xmlFile.GetData());
+            xmlFile.FindElem("NAME");
+            singleUserData.setName( xmlFile.GetData());
+            xmlFile.FindElem("SURNAME");
+            singleUserData.setSurname(xmlFile.GetData());
         xmlFile.OutOfElem();
-        users.push_back(singleUserData);
+        users.push_back( singleUserData );
         numberOfUsers++;
     }
     return numberOfUsers;
@@ -152,16 +135,14 @@ int addNewUser(vector <User> &users, int numberOfUsers) {
         CMarkup xmlFile;
         xmlFile.Load("users.xml");
 
-        xmlFile.AddElem( "USER" );
+        xmlFile.AddElem("USER");
         xmlFile.IntoElem();
-            xmlFile.AddElem( "ID", singleUserData.getID() );
-            xmlFile.AddElem( "LOGIN", singleUserData.getLogin() );
-            xmlFile.AddElem( "PASSWORD", singleUserData.getPassword() );
-            xmlFile.AddElem( "NAME", singleUserData.getName() );
-            xmlFile.AddElem( "SURNAME", singleUserData.getSurname() );
-        xmlFile.OutOfElem();
-
-        xmlFile.Save("users.xml");
+            xmlFile.AddElem("ID", singleUserData.getID());
+            xmlFile.AddElem("LOGIN", singleUserData.getLogin());
+            xmlFile.AddElem("PASSWORD", singleUserData.getPassword());
+            xmlFile.AddElem("NAME", singleUserData.getName());
+            xmlFile.AddElem("SURNAME", singleUserData.getSurname());
+        xmlFile.OutOfElem();;
 
         cout << "Dane nowego Uzytkownika zapisano pomyslnie" << endl;
         Sleep(1000);
@@ -218,18 +199,30 @@ int login(int loggedUserID) {
     }
     return loggedUserID;
 }
-/*
+
 void saveInFile(vector <User> &users) {
 
-    ofstream file("Uzytkownicy.txt");
-
+    User singleUserData;
     vector <User>::iterator itr;
+    int counter = 0;
+    CMarkup xmlFile;
 
-    for(itr = users.begin(); itr < users.end(); itr++)
-        file << itr->convertToFileFormat();
-    file.close();
+    for(itr = users.begin(); itr < users.end(); itr++){
+    singleUserData = users[counter];
+
+    xmlFile.AddElem("USER");
+    xmlFile.IntoElem();
+        xmlFile.AddElem("ID", singleUserData.getID());
+        xmlFile.AddElem("LOGIN", singleUserData.getLogin());
+        xmlFile.AddElem("PASSWORD", singleUserData.getPassword());
+        xmlFile.AddElem("NAME", singleUserData.getName());
+        xmlFile.AddElem("SURNAME", singleUserData.getSurname());
+    xmlFile.OutOfElem();
+    counter++;
+    }
+    xmlFile.Save("users.xml");
 }
-*/
+
 bool isAnyUserRegistered(int numberOfUsers) {
     if(numberOfUsers == 0) {
         cout << "Brak zarejestrowanych Uzytkownikow..." << endl;

@@ -37,13 +37,6 @@ public:
 
 };
 
-// konwersja tekstu
-int convertStrToInt (string str);
-string convertIntToStr(int i);
-string changeToLowerCase(string word);
-string fromCapitalLetter(string word);
-
-
 int addNewUser(vector <User> &users, int numberOfUsers);
 int readUsersFromFile(vector <User> &users);
 bool isAnyUserRegistered(int numberOfUsers);
@@ -51,6 +44,7 @@ int getLoggedUserID(vector <User> &users, int numberOfUsers);
 int login(int loggedUserID);
 void saveInFile(vector <User> &users);
 
+int convertStrToInt (string str);
 void confirmationOfChange();
 void choosenOptionIsNotCorrect();
 bool choosenMenu (bool firstMenu);

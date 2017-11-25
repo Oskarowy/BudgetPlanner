@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include "Markup.h"
+#include "user.h"
 
 using namespace std;
 
@@ -27,7 +28,7 @@ public:
     string getItem();
     double getAmount();
 
-    virtual void setID(int newID);
+    virtual void setID(int newID) = 0;
     void setUserID(int loggedUserID);
     void setDate();
     void setItem();
@@ -35,3 +36,5 @@ public:
     void setItem(string newValue);
     void setAmount(double newValue);
 };
+
+double convertToCorrectDoubleFormat(string newValue);

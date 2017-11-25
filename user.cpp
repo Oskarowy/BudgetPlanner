@@ -108,43 +108,33 @@ void User::setSurname(string newValue) {
     surname = newValue;
 }
 
-/*
 int readUsersFromFile(vector <User> &users) {
 
     int numberOfUsers = 0;
     User singleUserData;
 
-    fstream file;
+    CMarkup xmlFile;
+    xmlFile.Load("users.xml");
 
-    string singleLine;
-    string currentWord = "";
-    int wordNumber = 1;
-
-    file.open("Uzytkownicy.txt", ios::in);
-
-    if(file.good() == false) cout << "Nie mozna otworzyc pliku!";
-
-    while(getline(file, singleLine)) {
-        for(int i = 0, end = singleLine.length(); i < end; i++) {
-            if(singleLine[i] != '|') {
-                currentWord += singleLine[i];
-            } else {
-                if(wordNumber == 1) singleUserData.setID(convertStrToInt(currentWord));
-                if(wordNumber == 2) singleUserData.setLogin(currentWord);
-                if(wordNumber == 3) singleUserData.setPassword(currentWord);
-                if(wordNumber%3 == 0) users.push_back(singleUserData);
-                currentWord = "";
-                wordNumber++;
-            }
-        }
-        wordNumber = 1;
+    while(xmlFile.FindElem( "USER" )){
+        xmlFile.IntoElem();
+            xmlFile.FindElem( "ID" );
+            singleUserData.setID( convertStrToInt(xmlFile.GetData()) );
+            xmlFile.FindElem( "LOGIN" );
+            singleUserData.setLogin( xmlFile.GetData() );
+            xmlFile.FindElem( "PASSWORD" );
+            singleUserData.setPassword( xmlFile.GetData() );
+            xmlFile.FindElem( "NAME" );
+            singleUserData.setName( xmlFile.GetData() );
+            xmlFile.FindElem( "SURNAME" );
+            singleUserData.setSurname( xmlFile.GetData() );
+        xmlFile.OutOfElem();
+        users.push_back(singleUserData);
         numberOfUsers++;
     }
-    file.close();
-
     return numberOfUsers;
 }
-*/
+
 int addNewUser(vector <User> &users, int numberOfUsers) {
 
     User singleUserData;
@@ -183,7 +173,7 @@ int addNewUser(vector <User> &users, int numberOfUsers) {
 
     return numberOfUsers;
 }
-/*
+
 int getLoggedUserID(vector <User> &users, int numberOfUsers) {
 
     int idOfLoggedUser = 0;
@@ -228,7 +218,7 @@ int login(int loggedUserID) {
     }
     return loggedUserID;
 }
-
+/*
 void saveInFile(vector <User> &users) {
 
     ofstream file("Uzytkownicy.txt");

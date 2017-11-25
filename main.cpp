@@ -14,12 +14,12 @@ int main() {
     vector <User> users;
     int numberOfUsers = 0;
     int loggedUserID = 0;
-    string loggedUserName = "";
+    string loggedUserLogin = "";
 
     //vector <Person> people;
     //int numberOfPeopleInTelebook = 0;
 
-    //numberOfUsers = readUsersFromFile(users);
+    numberOfUsers = readUsersFromFile(users);
 
     bool firstMenu = true;
     char choosenMenuOption;
@@ -41,26 +41,26 @@ int main() {
             case '1':
                 numberOfUsers = addNewUser(users, numberOfUsers);
                 break;
-            /*case '2':
+            case '2':
                 loggedUserID = login(getLoggedUserID(users, numberOfUsers));
                 if(loggedUserID != 0) {
-                    loggedUserName = users[loggedUserID-1].getLogin();
-                    numberOfPeopleInTelebook = readFromFile(people,loggedUserID);
+                    loggedUserLogin = users[loggedUserID-1].getLogin();
+                    //numberOfPeopleInTelebook = readFromFile(people,loggedUserID);
                     firstMenu = false;
                 }
-                break;*/
+                break;
             case '9':
                 cout << "Do zobaczenia!" << endl;
                 exit(0);
                 break;
-            default: ;
-                //choosenOptionIsNotCorrect();
+            default:
+                choosenOptionIsNotCorrect();
             }
-        } /*else {
+        } else {
             system("cls");
             cout << "--------------------------------------------------------" << endl;
             cout << "------------- Dane zalogowanego Uzytkownika ------------" << endl << endl;
-            cout << "                   Login: " << loggedUserName << endl;
+            cout << "                   Login: " << loggedUserLogin << endl;
             cout << "                   Numer ID: " << loggedUserID << endl << endl;
             cout << "--------------------------------------------------------" << endl<< endl;
             cout << "1. Dodaj nowa osobe do Ksiazki" << endl;
@@ -71,22 +71,21 @@ int main() {
             cout << "6. Edytuj dane osoby" << endl;
             cout << "7. Zmien haslo" << endl;
             cout << "8. Wyloguj sie" << endl;
-            choosenMenuOption = getch();
-            cout << "Wybrales " << choosenMenuOption << endl;
-            Sleep(250);
+
+            cin >> choosenMenuOption;
 
             switch (choosenMenuOption) {
             case '1':
-                numberOfPeopleInTelebook = addNewPerson(people, numberOfPeopleInTelebook, loggedUserID);
+                //numberOfPeopleInTelebook = addNewPerson(people, numberOfPeopleInTelebook, loggedUserID);
                 break;
             case '2':
-                searchByName(people);
+                //searchByName(people);
                 break;
             case '3':
-                searchBySurname(people);
+                //searchBySurname(people);
                 break;
-            case '4':
-                if(isTelebookEmpty(numberOfPeopleInTelebook) == false) {
+           /* case '4':
+                /*if(isTelebookEmpty(numberOfPeopleInTelebook) == false) {
                     if(people.empty() == false) showAllPeopleData(people);
                     else {
                         cout << endl << "Ten Uzytkownik nie ma zapisanych zadnych osob w Ksiazce!" << endl;
@@ -136,16 +135,16 @@ int main() {
                 saveInFile(users);
                 confirmationOfChange();
                 break;
-            case '8':
+           */ case '8':
                 loggedUserID = 0;
-                loggedUserName = "";
-                people.clear();
+                loggedUserLogin = "";
+                //people.clear();
                 firstMenu = true;
                 break;
             default:
                 choosenOptionIsNotCorrect();
             }
-        }*/
+        }
     }
     return 0;
 }

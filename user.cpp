@@ -1,0 +1,197 @@
+#include "user.h"
+#include "person.h"
+#include <iostream>
+#include <sstream>
+#include <vector>
+#include <fstream>
+#include <conio.h>
+#include <algorithm>
+#include <windows.h>
+
+using namespace std;
+
+void User::setID(int newID) {
+    id = newID;
+}
+
+void User::setLogin(string newLogin) {
+    login = newLogin;
+}
+
+void User::setPassword(string newPassword) {
+    password = newPassword;
+}
+
+void User::setNewLogin() {
+    string newLogin;
+    cout << "Podaj login: ";
+    cin.sync();
+    getline(cin,newLogin);
+    setLogin(newLogin);
+}
+
+void User::setNewPassword() {
+    string newPassword;
+    string newPasswordConfirmation;
+    cout << "Podaj haslo: ";
+    cin.sync();
+    getline(cin,newPassword);
+    cout << "Podaj ponownie haslo: ";
+    cin.sync();
+    getline(cin,newPasswordConfirmation);
+
+    if(newPassword == newPasswordConfirmation) setPassword(newPassword);
+    else cout << endl << "Wprowadzone hasla nie sa takie same!" << endl;
+}
+
+int User::getID() {
+    return id;
+}
+
+string User::getLogin() {
+    return login;
+}
+
+string User::getPassword() {
+    return password;
+}
+
+string User::convertToFileFormat() {
+    return (convertIntToStr(id) + '|' + login + '|' + password + '|' + "\n");
+}
+
+int readUsersFromFile(vector <User> &users) {
+
+    int numberOfUsers = 0;
+    User singleUserData;
+
+    fstream file;
+
+    string singleLine;
+    string currentWord = "";
+    int wordNumber = 1;
+
+    file.open("Uzytkownicy.txt", ios::in);
+
+    if(file.good() == false) cout << "Nie mozna otworzyc pliku!";
+
+    while(getline(file, singleLine)) {
+        for(int i = 0, end = singleLine.length(); i < end; i++) {
+            if(singleLine[i] != '|') {
+                currentWord += singleLine[i];
+            } else {
+                if(wordNumber == 1) singleUserData.setID(convertStrToInt(currentWord));
+                if(wordNumber == 2) singleUserData.setLogin(currentWord);
+                if(wordNumber == 3) singleUserData.setPassword(currentWord);
+                if(wordNumber%3 == 0) users.push_back(singleUserData);
+                currentWord = "";
+                wordNumber++;
+            }
+        }
+        wordNumber = 1;
+        numberOfUsers++;
+    }
+    file.close();
+
+    return numberOfUsers;
+}
+
+int addNewUser(vector <User> &users, int numberOfUsers) {
+
+    User singleUserData;
+
+    singleUserData.setID(numberOfUsers+1);
+    singleUserData.setNewLogin();
+    singleUserData.setNewPassword();
+
+    if(singleUserData.getPassword() != "brak") {
+
+        users.push_back(singleUserData);
+
+        string fileFormatUserData = singleUserData.convertToFileFormat();
+
+        fstream plik;
+        plik.open("Uzytkownicy.txt",ios::out | ios::app);
+
+        if(plik.good()) {
+            plik << fileFormatUserData;
+            plik.close();
+            cout << "Dane nowego Uzytkownika zapisano pomyslnie" << endl;
+            Sleep(1000);
+        } else {
+            cout << "Nie mozna otworzyc pliku Uzytkownicy.txt..." << endl;
+            Sleep(1000);
+        }
+        numberOfUsers++;
+    } else {
+        cout << endl << "Dane Uzytkownika nie zostaly zapisane, sprobuj ponownie..." << endl;
+        Sleep(1000);
+    }
+    return numberOfUsers;
+}
+
+int getLoggedUserID(vector <User> &users, int numberOfUsers) {
+
+    int idOfLoggedUser = 0;
+
+    if(isAnyUserRegistered(numberOfUsers) == true) {
+        string loginToFind;
+        string passwordToFind;
+
+        cout << "Podaj login: ";
+        cin.sync();
+        getline(cin,loginToFind);
+
+        cout << "Podaj haslo: ";
+        cin.sync();
+        getline(cin,passwordToFind);
+
+        vector <User>::iterator itr;
+        User singleUserData;
+        int counter = 0;
+
+        for(itr = users.begin(); itr != users.end(); itr++) {
+            if(users[counter].getLogin() == loginToFind) {
+                if(users[counter].getPassword() == passwordToFind) {
+                    idOfLoggedUser = users[counter].getID();
+                }
+            }
+            counter++;
+        }
+        if(idOfLoggedUser == 0) {
+            cout << endl << "Nie znaleziono Uzytkownika z takimi danymi...";
+            Sleep(1000);
+        }
+    }
+
+    return idOfLoggedUser;
+}
+
+int login(int loggedUserID) {
+    if(loggedUserID != 0) {
+        cout << endl << "Uzytkownik o numerze ID " << loggedUserID << " zostal poprawnie zalogowany!" << endl;
+        Sleep(1000);
+    }
+    return loggedUserID;
+}
+
+void saveInFile(vector <User> &users) {
+
+    ofstream file("Uzytkownicy.txt");
+
+    vector <User>::iterator itr;
+
+    for(itr = users.begin(); itr < users.end(); itr++)
+        file << itr->convertToFileFormat();
+    file.close();
+}
+
+bool isAnyUserRegistered(int numberOfUsers) {
+    if(numberOfUsers == 0) {
+        cout << "Brak zarejestrowanych Uzytkownikow..." << endl;
+        Sleep(1000);
+        return false;
+    }
+    return true;
+}
+

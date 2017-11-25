@@ -36,12 +36,10 @@ int main() {
             cout << "9. Zakoncz program" << endl;
 
             cin >> choosenMenuOption;
-            cout << "Wybrales " << choosenMenuOption << endl;
-            Sleep(250);
 
             switch (choosenMenuOption) {
             case '1':
-                //numberOfUsers = addNewUser(users, numberOfUsers);
+                numberOfUsers = addNewUser(users, numberOfUsers);
                 break;
             /*case '2':
                 loggedUserID = login(getLoggedUserID(users, numberOfUsers));

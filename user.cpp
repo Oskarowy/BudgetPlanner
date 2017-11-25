@@ -108,10 +108,7 @@ void User::setSurname(string newValue) {
     surname = newValue;
 }
 
-/*string User::convertToFileFormat() {
-    return (convertIntToStr(id) + '|' + login + '|' + password + '|' + "\n");
-}
-
+/*
 int readUsersFromFile(vector <User> &users) {
 
     int numberOfUsers = 0;
@@ -147,41 +144,46 @@ int readUsersFromFile(vector <User> &users) {
 
     return numberOfUsers;
 }
-
+*/
 int addNewUser(vector <User> &users, int numberOfUsers) {
 
     User singleUserData;
 
     singleUserData.setID(numberOfUsers+1);
+    singleUserData.setName();
+    singleUserData.setSurname();
     singleUserData.setLogin();
     singleUserData.setPassword();
 
-    if(singleUserData.getPassword() != "brak") {
+    if(singleUserData.getPassword() != "haslo") {
 
         users.push_back(singleUserData);
 
-        string fileFormatUserData = singleUserData.convertToFileFormat();
+        CMarkup xmlFile;
+        xmlFile.Load("users.xml");
 
-        fstream plik;
-        plik.open("Uzytkownicy.txt",ios::out | ios::app);
+        xmlFile.AddElem( "USER" );
+        xmlFile.IntoElem();
+            xmlFile.AddElem( "ID", singleUserData.getID() );
+            xmlFile.AddElem( "LOGIN", singleUserData.getLogin() );
+            xmlFile.AddElem( "PASSWORD", singleUserData.getPassword() );
+            xmlFile.AddElem( "NAME", singleUserData.getName() );
+            xmlFile.AddElem( "SURNAME", singleUserData.getSurname() );
+        xmlFile.OutOfElem();
 
-        if(plik.good()) {
-            plik << fileFormatUserData;
-            plik.close();
-            cout << "Dane nowego Uzytkownika zapisano pomyslnie" << endl;
-            Sleep(1000);
-        } else {
-            cout << "Nie mozna otworzyc pliku Uzytkownicy.txt..." << endl;
-            Sleep(1000);
-        }
+        xmlFile.Save("users.xml");
+
+        cout << "Dane nowego Uzytkownika zapisano pomyslnie" << endl;
+        Sleep(1000);
         numberOfUsers++;
     } else {
         cout << endl << "Dane Uzytkownika nie zostaly zapisane, sprobuj ponownie..." << endl;
         Sleep(1000);
     }
+
     return numberOfUsers;
 }
-
+/*
 int getLoggedUserID(vector <User> &users, int numberOfUsers) {
 
     int idOfLoggedUser = 0;

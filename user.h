@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include "Markup.h"
 
 using namespace std;
 
@@ -34,7 +35,6 @@ public:
     void setName(string newValue);
     void setSurname(string newValue);
 
-    //string convertToFileFormat();
 };
 
 // konwersja tekstu

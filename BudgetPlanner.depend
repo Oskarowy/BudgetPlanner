@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1511609413 source:d:\programowanie\projekty\budgetplanner\main.cpp
+1511611362 source:d:\programowanie\projekty\budgetplanner\main.cpp
 	"user.h"
 	<iostream>
 	<windows.h>
@@ -9,11 +9,12 @@
 	<vector>
 	<algorithm>
 
-1511609260 d:\programowanie\projekty\budgetplanner\user.h
+1511610326 d:\programowanie\projekty\budgetplanner\user.h
 	<iostream>
 	<vector>
+	"Markup.h"
 
-1511609507 source:d:\programowanie\projekty\budgetplanner\user.cpp
+1511611347 source:d:\programowanie\projekty\budgetplanner\user.cpp
 	"user.h"
 	<iostream>
 	<sstream>
@@ -22,4 +23,18 @@
 	<conio.h>
 	<algorithm>
 	<windows.h>
+
+1303063612 source:d:\programowanie\projekty\budgetplanner\markup.cpp
+	<stdio.h>
+	"Markup.h"
+	<errno.h>
+	<iconv.h>
+	<windows.h>
+	<mbstring.h>
+
+1303063612 d:\programowanie\projekty\budgetplanner\markup.h
+	<stdlib.h>
+	<string.h>
+	<string>
+	<afx.h>
 

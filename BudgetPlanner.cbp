@@ -32,7 +32,13 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="Markup.cpp" />
+		<Unit filename="Markup.h" />
+		<Unit filename="cashflow.cpp" />
+		<Unit filename="cashflow.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="user.cpp" />
+		<Unit filename="user.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />

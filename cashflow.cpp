@@ -56,7 +56,7 @@ void CashFlow::setAmount(double newValue) {
     amount = newValue;
 }
 
-double CashFlow::convertToCorrectDoubleFormat(string doubleValueAsString) {
+double convertToCorrectDoubleFormat(string doubleValueAsString) {
     doubleValueAsString+= ".";
     double correctValue = 0.0;
     double fraction = 0.0;
@@ -86,14 +86,6 @@ void Income::setID(int newIncomeID){
     id = newIncomeID;
 }
 
-int Expense::getID() {
-    return id;
-}
-
-void Expense::setID(int newExpenseID){
-    id = newExpenseID;
-}
-
 int addNewIncome(vector <Income> &incomes, int numberOfIncomes, int loggedUserID){
     Income singleIncomeData;
 
@@ -105,15 +97,15 @@ int addNewIncome(vector <Income> &incomes, int numberOfIncomes, int loggedUserID
 
     //if(singleIncomeData.getDate() != MINIMALNA DATA) {
 
-    ///// konwersja na poprawny zapis kwoty do pliku xml /////
+    ///// konwersja kwoty na string w celu zapisu do pliku xml /////
     double amount = singleIncomeData.getAmount();
     int moreThanOne = amount;
-    double lessThanOne = amount-moreThanOne;
+    double theRest = amount-moreThanOne;
 
     string amountAsStr = "";
     amountAsStr+=convertIntToStr(moreThanOne);
     amountAsStr+=".";
-    amountAsStr+=convertIntToStr((lessThanOne)*100);
+    amountAsStr+=convertIntToStr((theRest)*100);
 
 
         incomes.push_back(singleIncomeData);
@@ -140,4 +132,118 @@ int addNewIncome(vector <Income> &incomes, int numberOfIncomes, int loggedUserID
     }*/
 
     return numberOfIncomes;
+}
+
+int readIncomesFromFile(vector <Income> &incomes, int loggedUserID){
+
+    int numberOfIncomes = 0;
+    Income singleIncomeData;
+
+    CMarkup xmlFile;
+    xmlFile.Load("incomes.xml");
+
+    while(xmlFile.FindElem("INCOME")){
+        xmlFile.IntoElem();
+            xmlFile.FindElem("ID");
+            singleIncomeData.setID(convertStrToInt(xmlFile.GetData()));
+            xmlFile.FindElem("USER ID");
+            singleIncomeData.setUserID(convertStrToInt(xmlFile.GetData()));
+            //xmlFile.FindElem("DATE");
+            //singleIncomeData.setDate(xmlFile.GetData());
+            xmlFile.FindElem("ITEM");
+            singleIncomeData.setItem(xmlFile.GetData());
+            xmlFile.FindElem("AMOUNT");
+            singleIncomeData.setAmount(convertToCorrectDoubleFormat(xmlFile.GetData()));
+        xmlFile.OutOfElem();
+        if(singleIncomeData.getUserID()==loggedUserID) {
+            incomes.push_back(singleIncomeData);
+            numberOfIncomes++;
+        }
+    }
+    return numberOfIncomes;
+}
+
+int Expense::getID() {
+    return id;
+}
+
+void Expense::setID(int newExpenseID){
+    id = newExpenseID;
+}
+
+int addNewExpense(vector <Expense> &expenses, int numberOfExpenses, int loggedUserID){
+    Expense singleExpenseData;
+
+    singleExpenseData.setID(numberOfExpenses+1);
+    singleExpenseData.setUserID(loggedUserID);
+    //singleExpenseData.setDate();
+    singleExpenseData.setItem();
+    singleExpenseData.setAmount();
+
+    //if(singleExpenseData.getDate() != MINIMALNA DATA) {
+
+    ///// konwersja kwoty na string w celu zapisu do pliku xml /////
+    double amount = singleExpenseData.getAmount();
+    int moreThanOne = amount;
+    double theRest = amount-moreThanOne;
+
+    string amountAsStr = "";
+    amountAsStr+=convertIntToStr(moreThanOne);
+    amountAsStr+=".";
+    amountAsStr+=convertIntToStr((theRest)*100);
+
+
+        expenses.push_back(singleExpenseData);
+
+        CMarkup xmlFile;
+        xmlFile.Load("expenses.xml");
+
+        xmlFile.AddElem("EXPENSE");
+        xmlFile.IntoElem();
+            xmlFile.AddElem("ID", singleExpenseData.getID());
+            xmlFile.AddElem("USER ID", singleExpenseData.getUserID());
+            xmlFile.AddElem("DATE", singleExpenseData.getDate());
+            xmlFile.AddElem("ITEM", singleExpenseData.getItem());
+            xmlFile.AddElem("AMOUNT", amountAsStr);
+        xmlFile.OutOfElem();
+        xmlFile.Save("expenses.xml");
+
+        cout << "Dane nowego wydatku zapisano pomyslnie" << endl;
+        Sleep(1000);
+        numberOfExpenses++;
+    /*} else {
+        cout << endl << "Dane wydatku nie zostaly zapisane, sprobuj ponownie..." << endl;
+        Sleep(1000);
+    }*/
+
+    return numberOfExpenses;
+}
+
+int readExpensesFromFile(vector <Expense> &expenses, int loggedUserID){
+
+    int numberOfExpenses = 0;
+    Expense singleExpenseData;
+
+    CMarkup xmlFile;
+    xmlFile.Load("expenses.xml");
+
+    while(xmlFile.FindElem("INCOME")){
+        xmlFile.IntoElem();
+            xmlFile.FindElem("ID");
+            singleExpenseData.setID(convertStrToInt(xmlFile.GetData()));
+            xmlFile.FindElem("USER ID");
+            singleExpenseData.setUserID(convertStrToInt(xmlFile.GetData()));
+            //xmlFile.FindElem("DATE");
+            //singleExpenseData.setDate(xmlFile.GetData());
+            xmlFile.FindElem("ITEM");
+            singleExpenseData.setItem(xmlFile.GetData());
+            xmlFile.FindElem("AMOUNT");
+            singleExpenseData.setAmount( convertToCorrectDoubleFormat(xmlFile.GetData()));
+        xmlFile.OutOfElem();
+        if(singleExpenseData.getUserID()==loggedUserID) {
+            expenses.push_back( singleExpenseData );
+            numberOfExpenses++;
+        }
+    }
+    return numberOfExpenses;
 }

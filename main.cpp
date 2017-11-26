@@ -22,6 +22,9 @@ int main() {
     vector <Income> incomes;
     int numberOfIncomes = 0;
 
+    vector <Expense> expenses;
+    int numberOfExpenses = 0;
+
     bool firstMenu = true;
     char choosenMenuOption;
 
@@ -47,9 +50,8 @@ int main() {
                 if(loggedUserID != 0) {
                     loggedUserName = users[loggedUserID-1].getName();
                     loggedUserSurname = users[loggedUserID-1].getSurname();
-                    /////////////////////////////////////////////////////////////////
-                    //////wczytaj wydatki i przychody zalogowanego uzytkownika///////
-                    /////////////////////////////////////////////////////////////////
+                    numberOfIncomes = readIncomesFromFile(incomes,loggedUserID);
+                    numberOfExpenses = readExpensesFromFile(expenses,loggedUserID);
                     firstMenu = false;
                 }
                 break;
@@ -82,57 +84,17 @@ int main() {
                 numberOfIncomes = addNewIncome(incomes, numberOfIncomes,loggedUserID);
                 break;
             case '2':
-                //searchByName(people);
+                numberOfExpenses = addNewExpense(expenses, numberOfExpenses, loggedUserID);
                 break;
             case '3':
-                //searchBySurname(people);
+                ;
                 break;
-           /* case '4':
-                if(isTelebookEmpty(numberOfPeopleInTelebook) == false) {
-                    if(people.empty() == false) showAllPeopleData(people);
-                    else {
-                        cout << endl << "Ten Uzytkownik nie ma zapisanych zadnych osob w Ksiazce!" << endl;
-                        Sleep(1500);
-                    }
-                }
+           case '4':
+                ;
                 break;
             case '5':
-                if(isTelebookEmpty(numberOfPeopleInTelebook) == false) {
-                    system("cls");
-                    cout << "--------------------------------------------------------" << endl;
-                    cout << "------------ Usuwanie danych osoby z ksiazki -----------" << endl;
-                    cout << "--------------------------------------------------------" << endl<< endl;
-                    cout << "Za chwile wyswietlona zostanie cala zawartosc Ksiazki Adresowej." << endl;
-                    cout << "Wyszukaj w niej odpowiednie ID, aby usunac przypisana do tego numeru ID osobe..." << endl << endl;
-                    cout << "Aby rozpoczac wyszukiwanie, wcisnij dowolny przycisk" << endl;
-                    getch();
-                    system("cls");
-                    showAllPeopleData(people);
-                    removePerson(people);
-                    numberOfPeopleInTelebook = updateNumberOfPeopleInTelebook(people,numberOfPeopleInTelebook, loggedUserID);
-                }
+                ;
                 break;
-            case '6':
-                if(isTelebookEmpty(numberOfPeopleInTelebook)==false) {
-                    if(people.empty()==true) {
-                        cout << endl << "Ten Uzytkownik nie ma zapisanych zadnych osob w Ksiazce!" << endl;
-                        Sleep(1500);
-                    } else {
-                        system("cls");
-                        cout << "--------------------------------------------------------" << endl;
-                        cout << "----------------- Edycja danych osoby ------------------" << endl;
-                        cout << "--------------------------------------------------------" << endl<< endl;
-                        cout << "Za chwile wyswietlona zostanie cala zawartosc Ksiazki Adresowej." << endl;
-                        cout << "Wyszukaj w niej odpowiednie ID, aby edytowac dane przypisanej do tego numeru osoby..." << endl << endl;
-                        cout << "Aby rozpoczac wyszukiwanie, wcisnij dowolny przycisk" << endl;
-                        getch();
-                        system("cls");
-                        showAllPeopleData(people);
-                        rewriteFile(editPersonData(people));
-                        numberOfPeopleInTelebook = updateNumberOfPeopleInTelebook(people,numberOfPeopleInTelebook, loggedUserID);
-                    }
-                }
-                break;*/
             case '6':
                 users[loggedUserID-1].setPassword();
                 saveInFile(users);
@@ -142,9 +104,8 @@ int main() {
                 loggedUserID = 0;
                 loggedUserName = "";
                 loggedUserSurname = "";
-                /////////////////////////////////////////////////////////////////
-                //////wyczysc wydatki i przychody zalogowanego uzytkownika///////
-                /////////////////////////////////////////////////////////////////
+                incomes.clear();
+                expenses.clear();
                 firstMenu = true;
                 break;
             default:

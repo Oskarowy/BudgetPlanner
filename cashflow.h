@@ -74,9 +74,9 @@ public:
     void setAmount();
     void setItem(string newValue);
     void setAmount(double newValue);
-
-    double convertToCorrectDoubleFormat(string newValue);
 };
+
+double convertToCorrectDoubleFormat(string newValue);
 
 class Income : public CashFlow {
 public:
@@ -85,13 +85,17 @@ public:
 
 };
 
+int addNewIncome(vector <Income> &incomes, int numberOfIncomes, int loggedUserID);
+int readIncomesFromFile(vector <Income> &incomes, int loggedUserID);
+
 class Expense : public CashFlow {
 public:
     int getID();
     void setID(int newExpenseID);
 };
 
-int addNewIncome(vector <Income> &incomes, int numberOfIncomes, int loggedUserID);
+int addNewExpense(vector <Expense> &expenses, int numberOfExpenses, int loggedUserID);
+int readExpensesFromFile(vector <Expense> &expenses, int loggedUserID);
 
 
 

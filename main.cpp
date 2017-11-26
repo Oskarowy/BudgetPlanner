@@ -19,6 +19,9 @@ int main() {
 
     numberOfUsers = readUsersFromFile(users);
 
+    vector <Income> incomes;
+    int numberOfIncomes = 0;
+
     bool firstMenu = true;
     char choosenMenuOption;
 
@@ -76,7 +79,7 @@ int main() {
 
             switch (choosenMenuOption) {
             case '1':
-                ;
+                numberOfIncomes = addNewIncome(incomes, numberOfIncomes,loggedUserID);
                 break;
             case '2':
                 //searchByName(people);

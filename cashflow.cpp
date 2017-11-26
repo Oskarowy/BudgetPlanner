@@ -59,6 +59,7 @@ void CashFlow::setAmount(double newValue) {
 double CashFlow::convertToCorrectDoubleFormat(string doubleValueAsString) {
     doubleValueAsString+= ".";
     double correctValue = 0.0;
+    double fraction = 0.0;
     string extractedNumber = "";
     int counter = 1;
 
@@ -66,10 +67,12 @@ double CashFlow::convertToCorrectDoubleFormat(string doubleValueAsString) {
         if((doubleValueAsString[i] == ',')||(doubleValueAsString[i] == '.')) {
             if(counter == 1) correctValue+=convertStrToInt(extractedNumber);
             if(counter == 2) {
-                double fraction = convertStrToInt(extractedNumber)/100;
+                fraction = convertStrToInt(extractedNumber);
+                fraction/=100;
                 correctValue+=fraction;
             }
             counter++;
+            extractedNumber = "";
         } else extractedNumber+=doubleValueAsString[i];
     }
     return correctValue;
@@ -89,4 +92,52 @@ int Expense::getID() {
 
 void Expense::setID(int newExpenseID){
     id = newExpenseID;
+}
+
+int addNewIncome(vector <Income> &incomes, int numberOfIncomes, int loggedUserID){
+    Income singleIncomeData;
+
+    singleIncomeData.setID(numberOfIncomes+1);
+    singleIncomeData.setUserID(loggedUserID);
+    //singleIncomeData.setDate();
+    singleIncomeData.setItem();
+    singleIncomeData.setAmount();
+
+    //if(singleIncomeData.getDate() != MINIMALNA DATA) {
+
+    ///// konwersja na poprawny zapis kwoty do pliku xml /////
+    double amount = singleIncomeData.getAmount();
+    int moreThanOne = amount;
+    double lessThanOne = amount-moreThanOne;
+
+    string amountAsStr = "";
+    amountAsStr+=convertIntToStr(moreThanOne);
+    amountAsStr+=".";
+    amountAsStr+=convertIntToStr((lessThanOne)*100);
+
+
+        incomes.push_back(singleIncomeData);
+
+        CMarkup xmlFile;
+        xmlFile.Load("incomes.xml");
+
+        xmlFile.AddElem("INCOME");
+        xmlFile.IntoElem();
+            xmlFile.AddElem("ID", singleIncomeData.getID());
+            xmlFile.AddElem("USER ID", singleIncomeData.getUserID());
+            xmlFile.AddElem("DATE", singleIncomeData.getDate());
+            xmlFile.AddElem("ITEM", singleIncomeData.getItem());
+            xmlFile.AddElem("AMOUNT", amountAsStr);
+        xmlFile.OutOfElem();
+        xmlFile.Save("incomes.xml");
+
+        cout << "Dane nowego przychodu zapisano pomyslnie" << endl;
+        Sleep(1000);
+        numberOfIncomes++;
+    /*} else {
+        cout << endl << "Dane przychodu nie zostaly zapisane, sprobuj ponownie..." << endl;
+        Sleep(1000);
+    }*/
+
+    return numberOfIncomes;
 }

@@ -45,6 +45,7 @@ int login(int loggedUserID);
 void saveInFile(vector <User> &users);
 
 int convertStrToInt (string str);
+string convertIntToStr(int i);
 void confirmationOfChange();
 void choosenOptionIsNotCorrect();
 bool choosenMenu (bool firstMenu);

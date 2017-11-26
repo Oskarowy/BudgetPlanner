@@ -16,6 +16,13 @@ int convertStrToInt (string str) {
     return i;
 }
 
+string convertIntToStr(int i) {
+    ostringstream ss;
+    ss << i;
+    string str = ss.str();
+    return str;
+}
+
 int User::getID() {
     return id;
 }
@@ -142,7 +149,8 @@ int addNewUser(vector <User> &users, int numberOfUsers) {
             xmlFile.AddElem("PASSWORD", singleUserData.getPassword());
             xmlFile.AddElem("NAME", singleUserData.getName());
             xmlFile.AddElem("SURNAME", singleUserData.getSurname());
-        xmlFile.OutOfElem();;
+        xmlFile.OutOfElem();
+        xmlFile.Save("users.xml");
 
         cout << "Dane nowego Uzytkownika zapisano pomyslnie" << endl;
         Sleep(1000);

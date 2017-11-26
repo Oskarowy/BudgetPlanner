@@ -82,6 +82,7 @@ class Income : public CashFlow {
 public:
     int getID();
     void setID(int newIncomeID);
+
 };
 
 class Expense : public CashFlow {
@@ -89,6 +90,8 @@ public:
     int getID();
     void setID(int newExpenseID);
 };
+
+int addNewIncome(vector <Income> &incomes, int numberOfIncomes, int loggedUserID);
 
 
 

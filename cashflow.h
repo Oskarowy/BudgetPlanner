@@ -6,44 +6,6 @@
 
 using namespace std;
 
-/*class Date {
-
-protected:
-    unsigned int year;
-    unsigned int month;
-    unsigned int day;
-
-public:
-    Date(int y=2000, int m=1, int d=1) {
-        this->year = y;
-        this->month = m;
-        this->day = d;
-    }
-
-    friend class CashFlow;
-
-    void getDate() {
-        cout << year << "-" << month << "-" << day;
-    }
-
-    void setDate() {
-        unsigned int y,m,d;
-        cout << "Podaj rok: ";
-        cin >> y;
-        cout << "Podaj miesiac: ";
-        cin >> m;
-        cout << "Podaj dzien: ";
-        cin >> d;
-
-        if((year<2000)||(month>12)||(day>31)) cout << "Data niepoprawna, wprowadz date wieksza niz 2000-01-01!" << endl;
-        else {
-            year = y;
-            month = m;
-            day = d;
-        }
-    }
-};*/
-
 class CashFlow {
 
 protected:
@@ -77,16 +39,17 @@ public:
 };
 
 double convertToCorrectDoubleFormat(string newValue);
+string convertDoubleToXMLStringFormat(double value);
 
 class Income : public CashFlow {
 public:
     int getID();
     void setID(int newIncomeID);
-
 };
 
+int readAllIncomesFromFile();
 int addNewIncome(vector <Income> &incomes, int numberOfIncomes, int loggedUserID);
-int readIncomesFromFile(vector <Income> &incomes, int loggedUserID);
+void readUserIncomesFromFile(vector <Income> &incomes, int loggedUserID);
 
 class Expense : public CashFlow {
 public:
@@ -94,8 +57,9 @@ public:
     void setID(int newExpenseID);
 };
 
+int readAllExpensesFromFile();
 int addNewExpense(vector <Expense> &expenses, int numberOfExpenses, int loggedUserID);
-int readExpensesFromFile(vector <Expense> &expenses, int loggedUserID);
+void readUserExpensesFromFile(vector <Expense> &expenses, int loggedUserID);
 
 
 

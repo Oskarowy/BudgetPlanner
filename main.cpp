@@ -21,9 +21,12 @@ int main() {
 
     vector <Income> incomes;
     int numberOfIncomes = 0;
+    numberOfIncomes = readAllIncomesFromFile();
+
 
     vector <Expense> expenses;
     int numberOfExpenses = 0;
+    numberOfExpenses = readAllExpensesFromFile();
 
     bool firstMenu = true;
     char choosenMenuOption;
@@ -50,8 +53,8 @@ int main() {
                 if(loggedUserID != 0) {
                     loggedUserName = users[loggedUserID-1].getName();
                     loggedUserSurname = users[loggedUserID-1].getSurname();
-                    numberOfIncomes = readIncomesFromFile(incomes,loggedUserID);
-                    numberOfExpenses = readExpensesFromFile(expenses,loggedUserID);
+                    readUserIncomesFromFile(incomes,loggedUserID);
+                    readUserExpensesFromFile(expenses,loggedUserID);
                     firstMenu = false;
                 }
                 break;

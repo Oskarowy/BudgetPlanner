@@ -1,6 +1,6 @@
 # depslib dependency file v1.0
-1511615503 source:d:\programowanie\projekty\budgetplanner\main.cpp
-	"user.h"
+1511694172 source:d:\programowanie\projekty\budgetplanner\main.cpp
+	"cashflow.h"
 	<iostream>
 	<windows.h>
 	<conio.h>
@@ -37,4 +37,22 @@
 	<string.h>
 	<string>
 	<afx.h>
+
+1511694781 source:d:\programowanie\projekty\budgetplanner\cashflow.cpp
+	"cashflow.h"
+	<iostream>
+	<sstream>
+	<vector>
+	<fstream>
+	<conio.h>
+	<algorithm>
+	<windows.h>
+	<time.h>
+
+1511694865 d:\programowanie\projekty\budgetplanner\cashflow.h
+	<iostream>
+	<vector>
+	<time.h>
+	"Markup.h"
+	"user.h"
 

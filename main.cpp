@@ -1,4 +1,4 @@
-#include "user.h"
+#include "cashflow.h"
 #include <iostream>
 #include <windows.h>
 #include <conio.h>
@@ -76,7 +76,7 @@ int main() {
 
             switch (choosenMenuOption) {
             case '1':
-                //numberOfPeopleInTelebook = addNewPerson(people, numberOfPeopleInTelebook, loggedUserID);
+                ;
                 break;
             case '2':
                 //searchByName(people);

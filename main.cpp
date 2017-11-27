@@ -90,7 +90,7 @@ int main() {
                 numberOfExpenses = addNewExpense(expenses, numberOfExpenses, loggedUserID);
                 break;
             case '3':
-                ;
+                showUserIncomesAndExpensesBalance(incomes, expenses);
                 break;
            case '4':
                 ;

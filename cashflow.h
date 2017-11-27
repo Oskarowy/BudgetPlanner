@@ -61,5 +61,7 @@ int readAllExpensesFromFile();
 int addNewExpense(vector <Expense> &expenses, int numberOfExpenses, int loggedUserID);
 void readUserExpensesFromFile(vector <Expense> &expenses, int loggedUserID);
 
+void showUserIncomesAndExpensesBalance(vector <Income> &incomes, vector <Expense> &expenses);
+
 
 

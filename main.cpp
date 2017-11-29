@@ -1,4 +1,5 @@
 #include "cashflow.h"
+#include "cDate.h"
 #include <iostream>
 #include <windows.h>
 #include <conio.h>

@@ -6,7 +6,6 @@
 #include <conio.h>
 #include <algorithm>
 #include <windows.h>
-#include <time.h>
 
 int CashFlow::getUserID() {
     return userID;

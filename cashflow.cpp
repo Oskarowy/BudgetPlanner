@@ -15,6 +15,25 @@ string CashFlow::getDate() {
     return flowDate;
 }
 
+cDate getDateAsObject(string dateAsString) {
+
+    cDate dateOfCashFlow;
+
+    string extractedNumber = "";
+    int counter = 1;
+
+    for(int i = 0, end = dateAsString.length(); i < end; i++) {
+        if(dateAsString[i] == '-') {
+            if(counter == 1) dateOfCashFlow.setYear(convertStrToInt(extractedNumber));
+            if(counter == 2) dateOfCashFlow.setMonth(convertStrToInt(extractedNumber));
+            if(counter == 3) dateOfCashFlow.setDay(convertStrToInt(extractedNumber));
+            counter++;
+            extractedNumber = "";
+        } else extractedNumber+=dateAsString[i];
+    }
+    return dateOfCashFlow;
+}
+
 string CashFlow::getItem() {
     return item;
 }
@@ -27,8 +46,41 @@ void CashFlow::setUserID(int loggedUserID) {
     userID = loggedUserID;
 }
 
+void CashFlow::setDate(string newValue){
+    flowDate = newValue;
+}
+
 void CashFlow::setDate() {
-    ;
+    cDate dateOfCashFlow;
+    string formattedDate;
+
+    cout << "Czy dodac rekord z data dzisiejsza? (T/N)" << endl;
+    cout << "Twoj wybor: ";
+    char userChoose;
+    cin >> userChoose;
+
+    switch(userChoose) {
+    case 'T':
+    case 't':
+        dateOfCashFlow.setAsToday();
+        break;
+    case 'N':
+    case 'n':
+        do {
+            dateOfCashFlow.setYear();
+            dateOfCashFlow.setMonth();
+            dateOfCashFlow.setDay();
+        } while (dateOfCashFlow.isDateCorrect()!=true);
+        break;
+    default:
+        choosenOptionIsNotCorrect();
+    }
+    if(dateOfCashFlow.isDateCorrect()) {
+        formattedDate = dateOfCashFlow.formatDate();
+        flowDate = formattedDate;
+        cout << endl << "Data ustawiona na " << flowDate << endl;
+        Sleep(500);
+    }
 }
 
 void CashFlow::setItem() {
@@ -104,8 +156,7 @@ int readAllIncomesFromFile() {
     CMarkup xmlFile;
     xmlFile.Load("incomes.xml");
 
-    while(xmlFile.FindElem("INCOME"))
-    {
+    while(xmlFile.FindElem("INCOME")) {
         xmlFile.IntoElem();
         xmlFile.OutOfElem();
         numberOfIncomes++;
@@ -116,38 +167,41 @@ int readAllIncomesFromFile() {
 
 int addNewIncome(vector <Income> &incomes, int numberOfIncomes, int loggedUserID) {
     Income singleIncomeData;
+    cDate minDate,dateToCheck;
 
     singleIncomeData.setID(numberOfIncomes+1);
     singleIncomeData.setUserID(loggedUserID);
-    //singleIncomeData.setDate();
+    singleIncomeData.setDate();
     singleIncomeData.setItem();
     singleIncomeData.setAmount();
 
-    //if(singleIncomeData.getDate() >= MINIMALNA DATA) {
+    dateToCheck = getDateAsObject(singleIncomeData.getDate());
 
-    incomes.push_back(singleIncomeData);
+    if(whichDateIsEarlier(dateToCheck, minDate)>=0) {
 
-    CMarkup xmlFile;
-    xmlFile.Load("incomes.xml");
+        incomes.push_back(singleIncomeData);
 
-    xmlFile.AddElem("INCOME");
-    xmlFile.IntoElem();
-    xmlFile.AddElem("ID", singleIncomeData.getID());
-    xmlFile.AddElem("USER", singleIncomeData.getUserID());
-    xmlFile.AddElem("DATE", singleIncomeData.getDate());
-    xmlFile.AddElem("ITEM", singleIncomeData.getItem());
-    xmlFile.AddElem("AMOUNT", convertDoubleToXMLStringFormat(singleIncomeData.getAmount()));
-    xmlFile.OutOfElem();
-    xmlFile.Save("incomes.xml");
+        CMarkup xmlFile;
+        xmlFile.Load("incomes.xml");
 
-    cout << "Dane nowego przychodu zapisano pomyslnie" << endl;
-    Sleep(1000);
-    numberOfIncomes++;
-    /*} else {
+        xmlFile.AddElem("INCOME");
+        xmlFile.IntoElem();
+        xmlFile.AddElem("ID", singleIncomeData.getID());
+        xmlFile.AddElem("USER", singleIncomeData.getUserID());
+        xmlFile.AddElem("DATE", singleIncomeData.getDate());
+        xmlFile.AddElem("ITEM", singleIncomeData.getItem());
+        xmlFile.AddElem("AMOUNT", convertDoubleToXMLStringFormat(singleIncomeData.getAmount()));
+        xmlFile.OutOfElem();
+        xmlFile.Save("incomes.xml");
+
+        cout << "Dane nowego przychodu zapisano pomyslnie" << endl;
+        Sleep(1000);
+        numberOfIncomes++;
+    } else {
         cout << endl << "Data nie moze byc wczesniejsza niz 2000-01-01..." << endl;
         cout << "Dane przychodu nie zostaly zapisane, sprobuj ponownie..." << endl;
         Sleep(1000);
-    }*/
+    }
 
     return numberOfIncomes;
 }
@@ -165,8 +219,8 @@ void readUserIncomesFromFile(vector <Income> &incomes, int loggedUserID) {
         singleIncomeData.setID(convertStrToInt(xmlFile.GetData()));
         xmlFile.FindElem("USER");
         singleIncomeData.setUserID(convertStrToInt(xmlFile.GetData()));
-        //xmlFile.FindElem("DATE");
-        //singleIncomeData.setDate(xmlFile.GetData());
+        xmlFile.FindElem("DATE");
+        singleIncomeData.setDate(xmlFile.GetData());
         xmlFile.FindElem("ITEM");
         singleIncomeData.setItem(xmlFile.GetData());
         xmlFile.FindElem("AMOUNT");
@@ -192,8 +246,7 @@ int readAllExpensesFromFile() {
     CMarkup xmlFile;
     xmlFile.Load("expenses.xml");
 
-    while(xmlFile.FindElem("EXPENSE"))
-    {
+    while(xmlFile.FindElem("EXPENSE")) {
         xmlFile.IntoElem();
         xmlFile.OutOfElem();
         numberOfExpenses++;
@@ -204,14 +257,17 @@ int readAllExpensesFromFile() {
 
 int addNewExpense(vector <Expense> &expenses, int numberOfExpenses, int loggedUserID) {
     Expense singleExpenseData;
+    cDate minDate,dateToCheck;
 
     singleExpenseData.setID(numberOfExpenses+1);
     singleExpenseData.setUserID(loggedUserID);
-    //singleExpenseData.setDate();
+    singleExpenseData.setDate();
     singleExpenseData.setItem();
     singleExpenseData.setAmount();
 
-    //if(singleExpenseData.getDate() >= MINIMALNA DATA) {
+    dateToCheck = getDateAsObject(singleExpenseData.getDate());
+
+    if(whichDateIsEarlier(dateToCheck, minDate)>=0) {
 
     expenses.push_back(singleExpenseData);
 
@@ -231,11 +287,11 @@ int addNewExpense(vector <Expense> &expenses, int numberOfExpenses, int loggedUs
     cout << "Dane nowego wydatku zapisano pomyslnie" << endl;
     Sleep(1000);
     numberOfExpenses++;
-    /*} else {
+    } else {
         cout << endl << "Data nie moze byc wczesniejsza niz 2000-01-01..." << endl;
         cout << "Dane wydatku nie zostaly zapisane, sprobuj ponownie..." << endl;
         Sleep(1000);
-    }*/
+    }
 
     return numberOfExpenses;
 }
@@ -253,8 +309,8 @@ void readUserExpensesFromFile(vector <Expense> &expenses, int loggedUserID) {
         singleExpenseData.setID(convertStrToInt(xmlFile.GetData()));
         xmlFile.FindElem("USER");
         singleExpenseData.setUserID(convertStrToInt(xmlFile.GetData()));
-        //xmlFile.FindElem("DATE");
-        //singleExpenseData.setDate(xmlFile.GetData());
+        xmlFile.FindElem("DATE");
+        singleExpenseData.setDate(xmlFile.GetData());
         xmlFile.FindElem("ITEM");
         singleExpenseData.setItem(xmlFile.GetData());
         xmlFile.FindElem("AMOUNT");
@@ -265,7 +321,7 @@ void readUserExpensesFromFile(vector <Expense> &expenses, int loggedUserID) {
     }
 }
 
-void showUserIncomesAndExpensesBalance(vector <Income> &incomes, vector <Expense> &expenses){
+void showUserIncomesAndExpensesBalance(vector <Income> &incomes, vector <Expense> &expenses) {
     double incomesSum = 0;
     double expensesSum = 0;
 
@@ -276,16 +332,16 @@ void showUserIncomesAndExpensesBalance(vector <Income> &incomes, vector <Expense
 
     cout << endl << "---------------------- PRZYCHODY ----------------------" << endl;
 
-    if(!incomes.empty()){
+    if(!incomes.empty()) {
         for(incItr = incomes.begin(); incItr != incomes.end(); incItr++) {
 
-        cout << endl << "ID przychodu: " << incomes[counter].getID() << endl;
-        cout << "Data przychodu: " << incomes[counter].getDate() << endl;
-        cout << "Czego dotyczy: " << incomes[counter].getItem() << endl;
-        cout << "Kwota przychodu: " << incomes[counter].getAmount() << endl;
-        cout << "--------------------------------------------------------" << endl;
-        incomesSum+=incomes[counter].getAmount();
-        counter++;
+            cout << endl << "ID przychodu: " << incomes[counter].getID() << endl;
+            cout << "Data przychodu: " << incomes[counter].getDate() << endl;
+            cout << "Czego dotyczy: " << incomes[counter].getItem() << endl;
+            cout << "Kwota przychodu: " << incomes[counter].getAmount() << endl;
+            cout << "--------------------------------------------------------" << endl;
+            incomesSum+=incomes[counter].getAmount();
+            counter++;
         }
     } else {
         cout << endl << "Lista przychodow tego Uzytkownika jest pusta." << endl;
@@ -298,16 +354,92 @@ void showUserIncomesAndExpensesBalance(vector <Income> &incomes, vector <Expense
     vector <Expense>::iterator expItr;
     counter = 0;
 
-    if(!expenses.empty()){
+    if(!expenses.empty()) {
         for(expItr = expenses.begin(); expItr != expenses.end(); expItr++) {
 
-        cout << endl << "ID wydatku: " << expenses[counter].getID() << endl;
-        cout << "Data wydatku: " << expenses[counter].getDate() << endl;
-        cout << "Czego dotyczy: " << expenses[counter].getItem() << endl;
-        cout << "Kwota wydatku: " << expenses[counter].getAmount() << endl;
+            cout << endl << "ID wydatku: " << expenses[counter].getID() << endl;
+            cout << "Data wydatku: " << expenses[counter].getDate() << endl;
+            cout << "Czego dotyczy: " << expenses[counter].getItem() << endl;
+            cout << "Kwota wydatku: " << expenses[counter].getAmount() << endl;
+            cout << "--------------------------------------------------------" << endl;
+            expensesSum+=expenses[counter].getAmount();
+            counter++;
+        }
+    } else {
+        cout << endl << "Lista wydatkow tego Uzytkownika jest pusta." << endl;
+        cout << "Najpierw dodaj jakis wydatek..." << endl;
         cout << "--------------------------------------------------------" << endl;
-        expensesSum+=expenses[counter].getAmount();
-        counter++;
+    }
+
+    double balance = incomesSum - expensesSum;
+
+    cout << endl << "--------------------------------------------------------" << endl;
+    cout << "            Suma przychodow: " << incomesSum << endl;
+    cout << "            Suma wydatkow: " << expensesSum  << endl;
+
+    if(balance >= 0) cout << "            Wygenerowane oszczednosci: " << balance << endl;
+    else cout << "            Wygenerowane straty: " << (balance*-1) << endl;
+
+    cout << "--------------------------------------------------------" << endl << endl;
+    cout << "-------------- Wcisnij dowolny przycisk! ---------------" << endl;
+    getch();
+}
+
+void showUserBalanceOfCurrentMonth(vector <Income> &incomes, vector <Expense> &expenses){
+    cDate today, dateToCheck;
+    today.setAsToday();
+    int currentYear = today.getYear();
+    int currentMonth = today.getMonth();
+
+    double incomesSum = 0;
+    double expensesSum = 0;
+
+    vector <Income>::iterator incItr;
+    int counter = 0;
+
+    system("cls");
+
+    cout << endl << "---------------------- PRZYCHODY ----------------------" << endl;
+
+    if(!incomes.empty()) {
+        for(incItr = incomes.begin(); incItr != incomes.end(); incItr++) {
+            dateToCheck = getDateAsObject(incomes[counter].getDate());
+
+            if((dateToCheck.getYear()==currentYear)&&(dateToCheck.getMonth()==currentMonth)){
+            cout << endl << "ID przychodu: " << incomes[counter].getID() << endl;
+            cout << "Data przychodu: " << incomes[counter].getDate() << endl;
+            cout << "Czego dotyczy: " << incomes[counter].getItem() << endl;
+            cout << "Kwota przychodu: " << incomes[counter].getAmount() << endl;
+            cout << "--------------------------------------------------------" << endl;
+            incomesSum+=incomes[counter].getAmount();
+            }
+            counter++;
+        }
+    } else {
+        cout << endl << "Lista przychodow tego Uzytkownika jest pusta." << endl;
+        cout << "Najpierw dodaj jakis przychod..." << endl;
+        cout << "--------------------------------------------------------" << endl;
+    }
+
+    cout << endl << "----------------------- WYDATKI -----------------------" << endl;
+
+    vector <Expense>::iterator expItr;
+    counter = 0;
+
+    if(!expenses.empty()) {
+        for(expItr = expenses.begin(); expItr != expenses.end(); expItr++) {
+            dateToCheck = getDateAsObject(expenses[counter].getDate());
+
+            if((dateToCheck.getYear()==currentYear)&&(dateToCheck.getMonth()==currentMonth)){
+
+            cout << endl << "ID wydatku: " << expenses[counter].getID() << endl;
+            cout << "Data wydatku: " << expenses[counter].getDate() << endl;
+            cout << "Czego dotyczy: " << expenses[counter].getItem() << endl;
+            cout << "Kwota wydatku: " << expenses[counter].getAmount() << endl;
+            cout << "--------------------------------------------------------" << endl;
+            expensesSum+=expenses[counter].getAmount();
+            }
+            counter++;
         }
     } else {
         cout << endl << "Lista wydatkow tego Uzytkownika jest pusta." << endl;

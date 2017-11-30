@@ -1,6 +1,7 @@
 #include <iostream>
-#include "cDate.h"
 #include <windows.h>
+#include "cDate.h"
+
 
 using namespace std;
 
@@ -17,6 +18,27 @@ cDate::cDate( int y, int m, int d) {
     this->year = y;
     this->month = m;
     this->day = d;
+}
+
+cDate::setDay() {
+    cout << "Podaj dzien:";
+    int d;
+    cin >> d;
+    this->day = d;
+}
+
+cDate::setMonth() {
+    cout << "Podaj miesiac:";
+    int m;
+    cin >> m;
+    this->month = m;
+}
+
+cDate::setYear() {
+    cout << "Podaj rok:";
+    int y;
+    cin >> y;
+    this->year = y;
 }
 
 cDate::setDay(int d) {
@@ -88,8 +110,12 @@ bool cDate::isDateCorrect() {
     else return true;
 }
 
-void cDate::showFormattedDate() {
-    cout << year << "-" << month << "-" << day << endl;
+string cDate::formatDate() {
+    string formattedDate = "";
+
+    formattedDate = convertIntToStr(year)+ "-" + convertIntToStr(month) + "-" + convertIntToStr(day);
+
+    return formattedDate;
 }
 
 void cDate::setAsToday() {

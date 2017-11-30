@@ -1,5 +1,4 @@
 #include "cashflow.h"
-#include "cDate.h"
 #include <iostream>
 #include <windows.h>
 #include <conio.h>
@@ -91,7 +90,7 @@ int main() {
                 numberOfExpenses = addNewExpense(expenses, numberOfExpenses, loggedUserID);
                 break;
             case '3':
-                showUserIncomesAndExpensesBalance(incomes, expenses);
+                showUserBalanceOfCurrentMonth(incomes, expenses);
                 break;
            case '4':
                 ;

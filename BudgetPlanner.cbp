@@ -34,6 +34,8 @@
 		</Compiler>
 		<Unit filename="Markup.cpp" />
 		<Unit filename="Markup.h" />
+		<Unit filename="cDate.cpp" />
+		<Unit filename="cDate.h" />
 		<Unit filename="cashflow.cpp" />
 		<Unit filename="cashflow.h" />
 		<Unit filename="main.cpp" />

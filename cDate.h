@@ -1,4 +1,5 @@
 #include <iostream>
+#include "user.h"
 
 using namespace std;
 
@@ -14,13 +15,16 @@ private:
 public:
     cDate();
     cDate( int y, int m, int d);
+    setDay();
+    setMonth();
+    setYear();
     setDay(int d);
     setMonth(int m);
     setYear(int y);
     getDay();
     getMonth();
     getYear();
-    void showFormattedDate();
+    string formatDate();
     void addDays(int countDays);
     bool isDateCorrect();
     void setAsToday();

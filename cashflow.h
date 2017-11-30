@@ -2,7 +2,7 @@
 #include <vector>
 #include <time.h>
 #include "Markup.h"
-#include "user.h"
+#include "cDate.h"
 
 using namespace std;
 
@@ -35,11 +35,14 @@ public:
     void setItem();
     void setAmount();
     void setItem(string newValue);
+    void setDate(string newValue);
     void setAmount(double newValue);
+
 };
 
 double convertToCorrectDoubleFormat(string newValue);
 string convertDoubleToXMLStringFormat(double value);
+cDate getDateAsObject(string dateAsString);
 
 class Income : public CashFlow {
 public:
@@ -62,6 +65,7 @@ int addNewExpense(vector <Expense> &expenses, int numberOfExpenses, int loggedUs
 void readUserExpensesFromFile(vector <Expense> &expenses, int loggedUserID);
 
 void showUserIncomesAndExpensesBalance(vector <Income> &incomes, vector <Expense> &expenses);
+void showUserBalanceOfCurrentMonth(vector <Income> &incomes, vector <Expense> &expenses);
 
 
 

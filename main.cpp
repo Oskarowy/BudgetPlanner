@@ -96,7 +96,7 @@ int main() {
                 showUserBalanceForPreviousMonth(incomes, expenses);
                 break;
             case '5':
-                ;
+                showUserBalanceForSpecifiedPeriod(incomes, expenses);
                 break;
             case '6':
                 users[loggedUserID-1].setPassword();

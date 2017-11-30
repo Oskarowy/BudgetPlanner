@@ -73,7 +73,7 @@ void CashFlow::setDate() {
             dateOfCashFlow.setDay();
             if(dateOfCashFlow.isDateCorrect()== false) {
                 cout << endl << "Wprowadzono niepoprawna date..." << endl;
-                cout << "Data nie moze byc wczesniejsza niz 2000-01-01..." << endl << endl;
+                cout << "UWAGA: Data nie moze byc wczesniejsza niz 2000-01-01..." << endl << endl;
                 Sleep(500);
             }
         } while (dateOfCashFlow.isDateCorrect()!=true);
@@ -426,6 +426,103 @@ void showUserBalanceForPreviousMonth(vector <Income> &incomes, vector <Expense> 
 
             if(((dateToCheck.getYear()==currentYear)&&(dateToCheck.getMonth()==previousMonth)) || ((dateToCheck.getYear()+1==currentYear)&&(dateToCheck.getMonth()==12))){
 
+            cout << endl << "ID wydatku: " << expenses[counter].getID() << endl;
+            cout << "Data wydatku: " << expenses[counter].getDate() << endl;
+            cout << "Czego dotyczy: " << expenses[counter].getItem() << endl;
+            cout << "Kwota wydatku: " << expenses[counter].getAmount() << endl;
+            cout << "--------------------------------------------------------" << endl;
+            expensesSum+=expenses[counter].getAmount();
+            }
+            counter++;
+        }
+    } else  thisUserHasGotNoExpenses();
+
+    checkUserBalance(incomesSum,expensesSum);
+    pressAnyButtonMesage();
+}
+
+void showUserBalanceForSpecifiedPeriod(vector <Income> &incomes, vector <Expense> &expenses){
+    cDate periodStart, periodEnd, dateToCheck;
+
+    cout << "Ustaw okres, za jaki ma byc wyswietlony bilans." << endl;
+
+    cout << endl << "Ustawienie daty poczatkowej:" << endl;
+    do {
+        periodStart.setYear();
+        periodStart.setMonth();
+        periodStart.setDay();
+        if(periodStart.isDateCorrect()== false) {
+            cout << endl << "Wprowadzono niepoprawna date..." << endl;
+            cout << "UWAGA: Data nie moze byc wczesniejsza niz 2000-01-01..." << endl << endl;
+            Sleep(500);
+            }
+        } while (periodStart.isDateCorrect()!=true);
+    if(periodStart.isDateCorrect()) {
+        string formattedDate = periodStart.formatDate();
+        cout << "Data poczatku bilansu ustawiona na " << formattedDate << endl;
+        Sleep(500);
+    }
+
+    cout << endl <<"Ustawienie daty koncowej:" << endl;
+    cout << "Czy ustawic na date dzisiejsza? (T/N)" << endl;
+    char userChoice;
+    cin >> userChoice;
+
+    if(userChoice == 'T' || userChoice == 't') periodEnd.setAsToday();
+    else {
+    do {
+        periodEnd.setYear();
+        periodEnd.setMonth();
+        periodEnd.setDay();
+        if(periodEnd.isDateCorrect()== false) {
+            cout << endl << "Wprowadzono niepoprawna date..." << endl;
+            cout << "UWAGA: Data nie moze byc wczesniejsza niz 2000-01-01..." << endl << endl;
+            Sleep(500);
+            }
+        } while (periodEnd.isDateCorrect()!=true);
+    }
+    if(periodEnd.isDateCorrect()) {
+        string formattedDate = periodEnd.formatDate();
+        cout << "Data konca bilansu ustawiona na " << formattedDate << endl;
+        Sleep(500);
+    }
+
+    double incomesSum = 0;
+    double expensesSum = 0;
+
+    vector <Income>::iterator incItr;
+    int counter = 0;
+
+    system("cls");
+
+    cout << endl << "---------------------- PRZYCHODY ----------------------" << endl;
+
+    if(!incomes.empty()) {
+        for(incItr = incomes.begin(); incItr != incomes.end(); incItr++) {
+            dateToCheck = getDateAsObject(incomes[counter].getDate());
+
+            if(((whichDateIsEarlier(periodStart,dateToCheck))<=0)&&(whichDateIsEarlier(dateToCheck, periodEnd))<=0){
+            cout << endl << "ID przychodu: " << incomes[counter].getID() << endl;
+            cout << "Data przychodu: " << incomes[counter].getDate() << endl;
+            cout << "Czego dotyczy: " << incomes[counter].getItem() << endl;
+            cout << "Kwota przychodu: " << incomes[counter].getAmount() << endl;
+            cout << "--------------------------------------------------------" << endl;
+            incomesSum+=incomes[counter].getAmount();
+            }
+            counter++;
+        }
+    } else thisUserHasGotNoIncomes();
+
+    cout << endl << "----------------------- WYDATKI -----------------------" << endl;
+
+    vector <Expense>::iterator expItr;
+    counter = 0;
+
+    if(!expenses.empty()) {
+        for(expItr = expenses.begin(); expItr != expenses.end(); expItr++) {
+            dateToCheck = getDateAsObject(expenses[counter].getDate());
+
+            if(((whichDateIsEarlier(periodStart,dateToCheck))<=0)&&(whichDateIsEarlier(dateToCheck, periodEnd))<=0){
             cout << endl << "ID wydatku: " << expenses[counter].getID() << endl;
             cout << "Data wydatku: " << expenses[counter].getDate() << endl;
             cout << "Czego dotyczy: " << expenses[counter].getItem() << endl;

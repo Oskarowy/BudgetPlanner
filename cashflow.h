@@ -66,6 +66,7 @@ void readUserExpensesFromFile(vector <Expense> &expenses, int loggedUserID);
 
 void showUserBalanceForCurrentMonth(vector <Income> &incomes, vector <Expense> &expenses);
 void showUserBalanceForPreviousMonth(vector <Income> &incomes, vector <Expense> &expenses);
+void showUserBalanceForSpecifiedPeriod(vector <Income> &incomes, vector <Expense> &expenses);
 
 void thisUserHasGotNoIncomes();
 void thisUserHasGotNoExpenses();

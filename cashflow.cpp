@@ -6,6 +6,7 @@
 #include <conio.h>
 #include <algorithm>
 #include <windows.h>
+#include <iomanip>
 
 int CashFlow::getUserID() {
     return userID;
@@ -70,6 +71,11 @@ void CashFlow::setDate() {
             dateOfCashFlow.setYear();
             dateOfCashFlow.setMonth();
             dateOfCashFlow.setDay();
+            if(dateOfCashFlow.isDateCorrect()== false) {
+                cout << endl << "Wprowadzono niepoprawna date..." << endl;
+                cout << "Data nie moze byc wczesniejsza niz 2000-01-01..." << endl << endl;
+                Sleep(500);
+            }
         } while (dateOfCashFlow.isDateCorrect()!=true);
         break;
     default:
@@ -78,7 +84,7 @@ void CashFlow::setDate() {
     if(dateOfCashFlow.isDateCorrect()) {
         formattedDate = dateOfCashFlow.formatDate();
         flowDate = formattedDate;
-        cout << endl << "Data ustawiona na " << flowDate << endl;
+        cout << "Data ustawiona na " << flowDate << endl;
         Sleep(500);
     }
 }
@@ -198,7 +204,6 @@ int addNewIncome(vector <Income> &incomes, int numberOfIncomes, int loggedUserID
         Sleep(1000);
         numberOfIncomes++;
     } else {
-        cout << endl << "Data nie moze byc wczesniejsza niz 2000-01-01..." << endl;
         cout << "Dane przychodu nie zostaly zapisane, sprobuj ponownie..." << endl;
         Sleep(1000);
     }
@@ -288,7 +293,6 @@ int addNewExpense(vector <Expense> &expenses, int numberOfExpenses, int loggedUs
     Sleep(1000);
     numberOfExpenses++;
     } else {
-        cout << endl << "Data nie moze byc wczesniejsza niz 2000-01-01..." << endl;
         cout << "Dane wydatku nie zostaly zapisane, sprobuj ponownie..." << endl;
         Sleep(1000);
     }
@@ -321,71 +325,7 @@ void readUserExpensesFromFile(vector <Expense> &expenses, int loggedUserID) {
     }
 }
 
-void showUserIncomesAndExpensesBalance(vector <Income> &incomes, vector <Expense> &expenses) {
-    double incomesSum = 0;
-    double expensesSum = 0;
-
-    vector <Income>::iterator incItr;
-    int counter = 0;
-
-    system("cls");
-
-    cout << endl << "---------------------- PRZYCHODY ----------------------" << endl;
-
-    if(!incomes.empty()) {
-        for(incItr = incomes.begin(); incItr != incomes.end(); incItr++) {
-
-            cout << endl << "ID przychodu: " << incomes[counter].getID() << endl;
-            cout << "Data przychodu: " << incomes[counter].getDate() << endl;
-            cout << "Czego dotyczy: " << incomes[counter].getItem() << endl;
-            cout << "Kwota przychodu: " << incomes[counter].getAmount() << endl;
-            cout << "--------------------------------------------------------" << endl;
-            incomesSum+=incomes[counter].getAmount();
-            counter++;
-        }
-    } else {
-        cout << endl << "Lista przychodow tego Uzytkownika jest pusta." << endl;
-        cout << "Najpierw dodaj jakis przychod..." << endl;
-        cout << "--------------------------------------------------------" << endl;
-    }
-
-    cout << endl << "----------------------- WYDATKI -----------------------" << endl;
-
-    vector <Expense>::iterator expItr;
-    counter = 0;
-
-    if(!expenses.empty()) {
-        for(expItr = expenses.begin(); expItr != expenses.end(); expItr++) {
-
-            cout << endl << "ID wydatku: " << expenses[counter].getID() << endl;
-            cout << "Data wydatku: " << expenses[counter].getDate() << endl;
-            cout << "Czego dotyczy: " << expenses[counter].getItem() << endl;
-            cout << "Kwota wydatku: " << expenses[counter].getAmount() << endl;
-            cout << "--------------------------------------------------------" << endl;
-            expensesSum+=expenses[counter].getAmount();
-            counter++;
-        }
-    } else {
-        cout << endl << "Lista wydatkow tego Uzytkownika jest pusta." << endl;
-        cout << "Najpierw dodaj jakis wydatek..." << endl;
-        cout << "--------------------------------------------------------" << endl;
-    }
-
-    double balance = incomesSum - expensesSum;
-
-    cout << endl << "--------------------------------------------------------" << endl;
-    cout << "            Suma przychodow: " << incomesSum << endl;
-    cout << "            Suma wydatkow: " << expensesSum  << endl;
-
-    if(balance >= 0) cout << "            Wygenerowane oszczednosci: " << balance << endl;
-    else cout << "            Wygenerowane straty: " << (balance*-1) << endl;
-
-    cout << "--------------------------------------------------------" << endl << endl;
-    cout << "-------------- Wcisnij dowolny przycisk! ---------------" << endl;
-    getch();
-}
-
-void showUserBalanceOfCurrentMonth(vector <Income> &incomes, vector <Expense> &expenses){
+void showUserBalanceForCurrentMonth(vector <Income> &incomes, vector <Expense> &expenses){
     cDate today, dateToCheck;
     today.setAsToday();
     int currentYear = today.getYear();
@@ -415,11 +355,7 @@ void showUserBalanceOfCurrentMonth(vector <Income> &incomes, vector <Expense> &e
             }
             counter++;
         }
-    } else {
-        cout << endl << "Lista przychodow tego Uzytkownika jest pusta." << endl;
-        cout << "Najpierw dodaj jakis przychod..." << endl;
-        cout << "--------------------------------------------------------" << endl;
-    }
+    } else thisUserHasGotNoIncomes();
 
     cout << endl << "----------------------- WYDATKI -----------------------" << endl;
 
@@ -441,22 +377,102 @@ void showUserBalanceOfCurrentMonth(vector <Income> &incomes, vector <Expense> &e
             }
             counter++;
         }
-    } else {
-        cout << endl << "Lista wydatkow tego Uzytkownika jest pusta." << endl;
-        cout << "Najpierw dodaj jakis wydatek..." << endl;
-        cout << "--------------------------------------------------------" << endl;
-    }
+    } else  thisUserHasGotNoExpenses();
+
+    checkUserBalance(incomesSum,expensesSum);
+    pressAnyButtonMesage();
+}
+
+void showUserBalanceForPreviousMonth(vector <Income> &incomes, vector <Expense> &expenses){
+    cDate today, dateToCheck;
+    today.setAsToday();
+    int currentYear = today.getYear();
+    int previousMonth = today.getMonth()-1;
+
+    double incomesSum = 0;
+    double expensesSum = 0;
+
+    vector <Income>::iterator incItr;
+    int counter = 0;
+
+    system("cls");
+
+    cout << endl << "---------------------- PRZYCHODY ----------------------" << endl;
+
+    if(!incomes.empty()) {
+        for(incItr = incomes.begin(); incItr != incomes.end(); incItr++) {
+            dateToCheck = getDateAsObject(incomes[counter].getDate());
+
+            if(((dateToCheck.getYear()==currentYear)&&(dateToCheck.getMonth()==previousMonth)) || ((dateToCheck.getYear()+1==currentYear)&&(dateToCheck.getMonth()==12))){
+            cout << endl << "ID przychodu: " << incomes[counter].getID() << endl;
+            cout << "Data przychodu: " << incomes[counter].getDate() << endl;
+            cout << "Czego dotyczy: " << incomes[counter].getItem() << endl;
+            cout << "Kwota przychodu: " << incomes[counter].getAmount() << endl;
+            cout << "--------------------------------------------------------" << endl;
+            incomesSum+=incomes[counter].getAmount();
+            }
+            counter++;
+        }
+    } else thisUserHasGotNoIncomes();
+
+    cout << endl << "----------------------- WYDATKI -----------------------" << endl;
+
+    vector <Expense>::iterator expItr;
+    counter = 0;
+
+    if(!expenses.empty()) {
+        for(expItr = expenses.begin(); expItr != expenses.end(); expItr++) {
+            dateToCheck = getDateAsObject(expenses[counter].getDate());
+
+            if(((dateToCheck.getYear()==currentYear)&&(dateToCheck.getMonth()==previousMonth)) || ((dateToCheck.getYear()+1==currentYear)&&(dateToCheck.getMonth()==12))){
+
+            cout << endl << "ID wydatku: " << expenses[counter].getID() << endl;
+            cout << "Data wydatku: " << expenses[counter].getDate() << endl;
+            cout << "Czego dotyczy: " << expenses[counter].getItem() << endl;
+            cout << "Kwota wydatku: " << expenses[counter].getAmount() << endl;
+            cout << "--------------------------------------------------------" << endl;
+            expensesSum+=expenses[counter].getAmount();
+            }
+            counter++;
+        }
+    } else  thisUserHasGotNoExpenses();
+
+    checkUserBalance(incomesSum,expensesSum);
+    pressAnyButtonMesage();
+}
+
+void thisUserHasGotNoIncomes(){
+    cout << endl << "Lista przychodow tego Uzytkownika jest pusta." << endl;
+    cout << "Najpierw dodaj jakis przychod..." << endl;
+    cout << "--------------------------------------------------------" << endl;
+}
+void thisUserHasGotNoExpenses(){
+    cout << endl << "Lista wydatkow tego Uzytkownika jest pusta." << endl;
+    cout << "Najpierw dodaj jakis wydatek..." << endl;
+    cout << "--------------------------------------------------------" << endl;
+}
+
+void checkUserBalance(double incomesSum, double expensesSum){
 
     double balance = incomesSum - expensesSum;
+    double zeroBalance = 0;
+
+    if((balance<0.01)&&(balance>-0.01)) balance = zeroBalance;
 
     cout << endl << "--------------------------------------------------------" << endl;
     cout << "            Suma przychodow: " << incomesSum << endl;
     cout << "            Suma wydatkow: " << expensesSum  << endl;
-
-    if(balance >= 0) cout << "            Wygenerowane oszczednosci: " << balance << endl;
-    else cout << "            Wygenerowane straty: " << (balance*-1) << endl;
+    if(balance > 0)
+        cout << endl << "            Wygenerowane oszczednosci: " << balance << endl;
+    else if(balance < 0)
+        cout << endl << "            Wygenerowane straty: " << (balance*-1) << endl;
+    else if(balance == 0)
+        cout << endl << "      W tym okresie przychody bilansuja wydatki..." << endl;
 
     cout << "--------------------------------------------------------" << endl << endl;
+}
+
+void pressAnyButtonMesage(){
     cout << "-------------- Wcisnij dowolny przycisk! ---------------" << endl;
     getch();
 }

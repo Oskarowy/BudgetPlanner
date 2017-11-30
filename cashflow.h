@@ -64,8 +64,13 @@ int readAllExpensesFromFile();
 int addNewExpense(vector <Expense> &expenses, int numberOfExpenses, int loggedUserID);
 void readUserExpensesFromFile(vector <Expense> &expenses, int loggedUserID);
 
-void showUserIncomesAndExpensesBalance(vector <Income> &incomes, vector <Expense> &expenses);
-void showUserBalanceOfCurrentMonth(vector <Income> &incomes, vector <Expense> &expenses);
+void showUserBalanceForCurrentMonth(vector <Income> &incomes, vector <Expense> &expenses);
+void showUserBalanceForPreviousMonth(vector <Income> &incomes, vector <Expense> &expenses);
+
+void thisUserHasGotNoIncomes();
+void thisUserHasGotNoExpenses();
+void checkUserBalance(double incomesSum, double expensesSum);
+void pressAnyButtonMesage();
 
 
 

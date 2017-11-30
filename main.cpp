@@ -90,10 +90,10 @@ int main() {
                 numberOfExpenses = addNewExpense(expenses, numberOfExpenses, loggedUserID);
                 break;
             case '3':
-                showUserBalanceOfCurrentMonth(incomes, expenses);
+                showUserBalanceForCurrentMonth(incomes, expenses);
                 break;
            case '4':
-                ;
+                showUserBalanceForPreviousMonth(incomes, expenses);
                 break;
             case '5':
                 ;

@@ -445,47 +445,92 @@ void showUserBalanceForPreviousMonth(vector <Income> &incomes, vector <Expense> 
     vector <Income>::iterator incItr;
     int counter = 0;
 
-    system("cls");
-
-    cout << endl << "---------------------- PRZYCHODY ----------------------" << endl;
+    vector <Income> matchedIncomes;
+    vector <long long int> incSorter;
+    long long int dateToSort;
 
     if(!incomes.empty()) {
         for(incItr = incomes.begin(); incItr != incomes.end(); incItr++) {
             dateToCheck = getDateAsObject(incomes[counter].getDate());
+            dateToSort = dateToCheck.getDateAsLongInt();
 
             if(((dateToCheck.getYear()==currentYear)&&(dateToCheck.getMonth()==previousMonth)) || ((dateToCheck.getYear()+1==currentYear)&&(dateToCheck.getMonth()==12))) {
-                cout << endl << "ID przychodu: " << incomes[counter].getID() << endl;
-                cout << "Data przychodu: " << incomes[counter].getDate() << endl;
-                cout << "Czego dotyczy: " << incomes[counter].getItem() << endl;
-                cout << "Kwota przychodu: " << incomes[counter].getAmount() << endl;
-                cout << "--------------------------------------------------------" << endl;
+                incSorter.push_back(dateToSort);
+                matchedIncomes.push_back(incomes[counter]);
                 noIncomes++;
                 incomesSum+=incomes[counter].getAmount();
-            } counter++;
+            }
+            counter++;
         } if(noIncomes == 0) thisUserHasGotNoIncomes();
     } else thisUserHasGotNoIncomes();
-
-    cout << endl << "----------------------- WYDATKI -----------------------" << endl;
 
     vector <Expense>::iterator expItr;
     counter = 0;
 
+    vector <Expense> matchedExpenses;
+    vector <long long int> expSorter;
+    dateToSort = 0;
+
     if(!expenses.empty()) {
         for(expItr = expenses.begin(); expItr != expenses.end(); expItr++) {
             dateToCheck = getDateAsObject(expenses[counter].getDate());
+            dateToSort = dateToCheck.getDateAsLongInt();
 
             if(((dateToCheck.getYear()==currentYear)&&(dateToCheck.getMonth()==previousMonth)) || ((dateToCheck.getYear()+1==currentYear)&&(dateToCheck.getMonth()==12))) {
 
-                cout << endl << "ID wydatku: " << expenses[counter].getID() << endl;
-                cout << "Data wydatku: " << expenses[counter].getDate() << endl;
-                cout << "Czego dotyczy: " << expenses[counter].getItem() << endl;
-                cout << "Kwota wydatku: " << expenses[counter].getAmount() << endl;
-                cout << "--------------------------------------------------------" << endl;
+                expSorter.push_back(dateToSort);
+                matchedExpenses.push_back(expenses[counter]);
                 noExpenses++;
                 expensesSum+=expenses[counter].getAmount();
-            } counter++;
+            }
+            counter++;
         } if(noExpenses == 0) thisUserHasGotNoExpenses();
     } else  thisUserHasGotNoExpenses();
+
+    stable_sort(incSorter.begin(), incSorter.end());
+    stable_sort(expSorter.begin(), expSorter.end());
+
+    system("cls");
+
+    cout << endl << "---------------------- PRZYCHODY ----------------------" << endl;
+
+    for(int i = 0; i < incSorter.size(); i++){
+
+        string sortingDate = changeDateToStr(incSorter[i]);
+        counter = 0;
+
+        for(incItr = matchedIncomes.begin(); incItr != matchedIncomes.end(); incItr++){
+
+            if(matchedIncomes[counter].getDate()==sortingDate){
+                cout << endl << "ID przychodu: " << matchedIncomes[counter].getID() << endl;
+                cout << "Data przychodu: " << matchedIncomes[counter].getDate() << endl;
+                cout << "Czego dotyczy: " << matchedIncomes[counter].getItem() << endl;
+                cout << "Kwota przychodu: " << matchedIncomes[counter].getAmount() << endl;
+                cout << "--------------------------------------------------------" << endl;
+            } counter++;
+        }
+    }
+
+    cout << endl << "----------------------- WYDATKI -----------------------" << endl;
+
+    for(int i = 0; i < expSorter.size(); i++) {
+
+        string sortingDate = changeDateToStr(expSorter[i]);
+        counter = 0;
+
+        for(expItr = matchedExpenses.begin(); expItr != matchedExpenses.end(); expItr++){
+
+            if(matchedExpenses[counter].getDate() == sortingDate){
+
+                cout << endl << "ID wydatku: " << matchedExpenses[counter].getID() << endl;
+                cout << "Data wydatku: " << matchedExpenses[counter].getDate() << endl;
+                cout << "Czego dotyczy: " << matchedExpenses[counter].getItem() << endl;
+                cout << "Kwota wydatku: " << matchedExpenses[counter].getAmount() << endl;
+                cout << "--------------------------------------------------------" << endl;
+            } counter++;
+
+        }
+    }
 
     checkUserBalance(incomesSum,expensesSum);
     pressAnyButtonMesage();

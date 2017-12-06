@@ -118,6 +118,48 @@ string cDate::formatDate() {
     return formattedDate;
 }
 
+long long int cDate::getDateAsLongInt(){
+    string formattedDate = "";
+
+    formattedDate = convertIntToStr(year);
+
+    if(month<=9) formattedDate += "0";
+    formattedDate += convertIntToStr(month);
+
+    if(day<=9) formattedDate += "0";
+    formattedDate += convertIntToStr(day);
+
+    long long int date = convertStrToInt(formattedDate);
+
+    return date;
+}
+
+string changeDateToStr(long long int date){
+    string formattedDate = "";
+
+    formattedDate = convertIntToStr(date);
+
+    string year, month, day;
+
+    int i = 0;
+    int length = formattedDate.length();
+
+    while(i != length)
+    {
+        if(i<=3) year+=formattedDate[i];
+        if(i==4 && formattedDate[i]=='0') i++;
+        if(i>=4&&i<=5) month+=formattedDate[i];
+        if(i==6 && formattedDate[i]=='0') i++;
+        if(i>=6) day+=formattedDate[i];
+        i++;
+    }
+
+    formattedDate = "";
+    formattedDate = year + "-" + month + "-" + day;
+
+    return formattedDate;
+}
+
 void cDate::setAsToday() {
 
     SYSTEMTIME winDate;

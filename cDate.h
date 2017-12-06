@@ -25,9 +25,11 @@ public:
     getMonth();
     getYear();
     string formatDate();
+    long long int getDateAsLongInt();
     void addDays(int countDays);
     bool isDateCorrect();
     void setAsToday();
 };
 
 int whichDateIsEarlier(cDate firstDate, cDate secondDate);
+string changeDateToStr(long long int date);

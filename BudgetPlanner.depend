@@ -38,7 +38,7 @@
 	<string>
 	<afx.h>
 
-1512592071 source:d:\programowanie\projekty\budgetplanner\cashflow.cpp
+1512669864 source:d:\programowanie\projekty\budgetplanner\cashflow.cpp
 	"cashflow.h"
 	<iostream>
 	<sstream>
@@ -49,7 +49,7 @@
 	<windows.h>
 	<iomanip>
 
-1512366598 d:\programowanie\projekty\budgetplanner\cashflow.h
+1512670596 d:\programowanie\projekty\budgetplanner\cashflow.h
 	<iostream>
 	<vector>
 	<time.h>

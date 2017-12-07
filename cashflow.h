@@ -68,6 +68,9 @@ void showUserBalanceForCurrentMonth(vector <Income> &incomes, vector <Expense> &
 void showUserBalanceForPreviousMonth(vector <Income> &incomes, vector <Expense> &expenses);
 void showUserBalanceForSpecifiedPeriod(vector <Income> &incomes, vector <Expense> &expenses);
 
+void sortVectorsAndRemoveDoubles(vector <long long int> &incSorter, vector <long long int> &expSorter);
+void showSortedIncomesAndExpenses( vector <Income> &matchedIncomes, vector <Expense> &matchedExpenses ,vector <long long int> &incSorter, vector <long long int> &expSorter);
+
 void thisUserHasGotNoIncomes();
 void thisUserHasGotNoExpenses();
 void checkUserBalance(double incomesSum, double expensesSum);

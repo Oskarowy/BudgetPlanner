@@ -382,51 +382,8 @@ void showUserBalanceForCurrentMonth(vector <Income> &incomes, vector <Expense> &
         } if(noExpenses == 0) thisUserHasGotNoExpenses();
     } else  thisUserHasGotNoExpenses();
 
-    stable_sort(incSorter.begin(), incSorter.end());
-    stable_sort(expSorter.begin(), expSorter.end());
-
-    system("cls");
-
-    cout << endl << "---------------------- PRZYCHODY ----------------------" << endl;
-
-    for(int i = 0; i < incSorter.size(); i++){
-
-        string sortingDate = changeDateToStr(incSorter[i]);
-        counter = 0;
-
-        for(incItr = matchedIncomes.begin(); incItr != matchedIncomes.end(); incItr++){
-
-            if(matchedIncomes[counter].getDate()==sortingDate){
-                cout << endl << "ID przychodu: " << matchedIncomes[counter].getID() << endl;
-                cout << "Data przychodu: " << matchedIncomes[counter].getDate() << endl;
-                cout << "Czego dotyczy: " << matchedIncomes[counter].getItem() << endl;
-                cout << "Kwota przychodu: " << matchedIncomes[counter].getAmount() << endl;
-                cout << "--------------------------------------------------------" << endl;
-            } counter++;
-        }
-    }
-
-    cout << endl << "----------------------- WYDATKI -----------------------" << endl;
-
-    for(int i = 0; i < expSorter.size(); i++) {
-
-        string sortingDate = changeDateToStr(expSorter[i]);
-        counter = 0;
-
-        for(expItr = matchedExpenses.begin(); expItr != matchedExpenses.end(); expItr++){
-
-            if(matchedExpenses[counter].getDate() == sortingDate){
-
-                cout << endl << "ID wydatku: " << matchedExpenses[counter].getID() << endl;
-                cout << "Data wydatku: " << matchedExpenses[counter].getDate() << endl;
-                cout << "Czego dotyczy: " << matchedExpenses[counter].getItem() << endl;
-                cout << "Kwota wydatku: " << matchedExpenses[counter].getAmount() << endl;
-                cout << "--------------------------------------------------------" << endl;
-            } counter++;
-
-        }
-    }
-
+    sortVectorsAndRemoveDoubles(incSorter, expSorter);
+    showSortedIncomesAndExpenses( matchedIncomes, matchedExpenses, incSorter, expSorter);
     checkUserBalance(incomesSum,expensesSum);
     pressAnyButtonMesage();
 }
@@ -487,51 +444,8 @@ void showUserBalanceForPreviousMonth(vector <Income> &incomes, vector <Expense> 
         } if(noExpenses == 0) thisUserHasGotNoExpenses();
     } else  thisUserHasGotNoExpenses();
 
-    stable_sort(incSorter.begin(), incSorter.end());
-    stable_sort(expSorter.begin(), expSorter.end());
-
-    system("cls");
-
-    cout << endl << "---------------------- PRZYCHODY ----------------------" << endl;
-
-    for(int i = 0; i < incSorter.size(); i++){
-
-        string sortingDate = changeDateToStr(incSorter[i]);
-        counter = 0;
-
-        for(incItr = matchedIncomes.begin(); incItr != matchedIncomes.end(); incItr++){
-
-            if(matchedIncomes[counter].getDate()==sortingDate){
-                cout << endl << "ID przychodu: " << matchedIncomes[counter].getID() << endl;
-                cout << "Data przychodu: " << matchedIncomes[counter].getDate() << endl;
-                cout << "Czego dotyczy: " << matchedIncomes[counter].getItem() << endl;
-                cout << "Kwota przychodu: " << matchedIncomes[counter].getAmount() << endl;
-                cout << "--------------------------------------------------------" << endl;
-            } counter++;
-        }
-    }
-
-    cout << endl << "----------------------- WYDATKI -----------------------" << endl;
-
-    for(int i = 0; i < expSorter.size(); i++) {
-
-        string sortingDate = changeDateToStr(expSorter[i]);
-        counter = 0;
-
-        for(expItr = matchedExpenses.begin(); expItr != matchedExpenses.end(); expItr++){
-
-            if(matchedExpenses[counter].getDate() == sortingDate){
-
-                cout << endl << "ID wydatku: " << matchedExpenses[counter].getID() << endl;
-                cout << "Data wydatku: " << matchedExpenses[counter].getDate() << endl;
-                cout << "Czego dotyczy: " << matchedExpenses[counter].getItem() << endl;
-                cout << "Kwota wydatku: " << matchedExpenses[counter].getAmount() << endl;
-                cout << "--------------------------------------------------------" << endl;
-            } counter++;
-
-        }
-    }
-
+    sortVectorsAndRemoveDoubles(incSorter, expSorter);
+    showSortedIncomesAndExpenses( matchedIncomes, matchedExpenses, incSorter, expSorter);
     checkUserBalance(incomesSum,expensesSum);
     pressAnyButtonMesage();
 }
@@ -633,51 +547,8 @@ void showUserBalanceForSpecifiedPeriod(vector <Income> &incomes, vector <Expense
         } if(noExpenses == 0) thisUserHasGotNoExpenses();
     } else  thisUserHasGotNoExpenses();
 
-    stable_sort(incSorter.begin(), incSorter.end());
-    stable_sort(expSorter.begin(), expSorter.end());
-
-    system("cls");
-
-    cout << endl << "---------------------- PRZYCHODY ----------------------" << endl;
-
-    for(int i = 0; i < incSorter.size(); i++){
-
-        string sortingDate = changeDateToStr(incSorter[i]);
-        counter = 0;
-
-        for(incItr = matchedIncomes.begin(); incItr != matchedIncomes.end(); incItr++){
-
-            if(matchedIncomes[counter].getDate()==sortingDate){
-                cout << endl << "ID przychodu: " << matchedIncomes[counter].getID() << endl;
-                cout << "Data przychodu: " << matchedIncomes[counter].getDate() << endl;
-                cout << "Czego dotyczy: " << matchedIncomes[counter].getItem() << endl;
-                cout << "Kwota przychodu: " << matchedIncomes[counter].getAmount() << endl;
-                cout << "--------------------------------------------------------" << endl;
-            } counter++;
-        }
-    }
-
-    cout << endl << "----------------------- WYDATKI -----------------------" << endl;
-
-    for(int i = 0; i < expSorter.size(); i++) {
-
-        string sortingDate = changeDateToStr(expSorter[i]);
-        counter = 0;
-
-        for(expItr = matchedExpenses.begin(); expItr != matchedExpenses.end(); expItr++){
-
-            if(matchedExpenses[counter].getDate() == sortingDate){
-
-                cout << endl << "ID wydatku: " << matchedExpenses[counter].getID() << endl;
-                cout << "Data wydatku: " << matchedExpenses[counter].getDate() << endl;
-                cout << "Czego dotyczy: " << matchedExpenses[counter].getItem() << endl;
-                cout << "Kwota wydatku: " << matchedExpenses[counter].getAmount() << endl;
-                cout << "--------------------------------------------------------" << endl;
-            } counter++;
-
-        }
-    }
-
+    sortVectorsAndRemoveDoubles(incSorter, expSorter);
+    showSortedIncomesAndExpenses( matchedIncomes, matchedExpenses, incSorter, expSorter);
     checkUserBalance(incomesSum,expensesSum);
     pressAnyButtonMesage();
 }
@@ -716,4 +587,73 @@ void checkUserBalance(double incomesSum, double expensesSum) {
 void pressAnyButtonMesage() {
     cout << "-------------- Wcisnij dowolny przycisk! ---------------" << endl;
     getch();
+}
+
+void sortVectorsAndRemoveDoubles(vector <long long int> &incSorter, vector <long long int> &expSorter){
+    stable_sort(incSorter.begin(), incSorter.end());
+    stable_sort(expSorter.begin(), expSorter.end());
+
+    for(int i=0, end = incSorter.size(); i < end-1; i++){
+        if(incSorter[i] == incSorter[i+1]){
+            incSorter.erase(incSorter.begin()+i);
+            end = incSorter.size();
+            i--;
+        }
+    }
+
+    for(int i=0, end = expSorter.size(); i < end-1; i++){
+        if(expSorter[i] == expSorter[i+1]){
+            expSorter.erase(expSorter.begin()+i);
+            end = expSorter.size();
+            i--;
+        }
+    }
+}
+
+void showSortedIncomesAndExpenses( vector <Income> &matchedIncomes, vector <Expense> &matchedExpenses ,vector <long long int> &incSorter, vector <long long int> &expSorter){
+
+    vector <Income>::iterator incItr;
+    vector <Expense>::iterator expItr;
+
+    system("cls");
+
+    cout << endl << "---------------------- PRZYCHODY ----------------------" << endl;
+
+    for(int i = 0; i < incSorter.size(); i++){
+
+        string sortingDate = changeDateToStr(incSorter[i]);
+        int counter = 0;
+
+        for(incItr = matchedIncomes.begin(); incItr != matchedIncomes.end(); incItr++){
+
+            if(matchedIncomes[counter].getDate()==sortingDate){
+                cout << endl << "ID przychodu: " << matchedIncomes[counter].getID() << endl;
+                cout << "Data przychodu: " << matchedIncomes[counter].getDate() << endl;
+                cout << "Czego dotyczy: " << matchedIncomes[counter].getItem() << endl;
+                cout << "Kwota przychodu: " << matchedIncomes[counter].getAmount() << endl;
+                cout << "--------------------------------------------------------" << endl;
+            } counter++;
+        }
+    }
+
+    cout << endl << "----------------------- WYDATKI -----------------------" << endl;
+
+    for(int i = 0; i < expSorter.size(); i++) {
+
+        string sortingDate = changeDateToStr(expSorter[i]);
+        int counter = 0;
+
+        for(expItr = matchedExpenses.begin(); expItr != matchedExpenses.end(); expItr++){
+
+            if(matchedExpenses[counter].getDate() == sortingDate){
+
+                cout << endl << "ID wydatku: " << matchedExpenses[counter].getID() << endl;
+                cout << "Data wydatku: " << matchedExpenses[counter].getDate() << endl;
+                cout << "Czego dotyczy: " << matchedExpenses[counter].getItem() << endl;
+                cout << "Kwota wydatku: " << matchedExpenses[counter].getAmount() << endl;
+                cout << "--------------------------------------------------------" << endl;
+            } counter++;
+
+        }
+    }
 }
